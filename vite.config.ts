@@ -69,9 +69,9 @@ export default defineConfig({
   define: {
     // Auto-configure API URL based on environment
     // Development (Replit/Localhost): Use empty string for same-origin requests
-    // Production (Vercel): Use VITE_API_URL env var (set to Render backend URL)
+    // Production: Use VITE_API_URL env var (set to Render backend URL)
     'import.meta.env.VITE_API_URL': JSON.stringify(
-      process.env.VITE_API_URL || ''
+      process.env.VITE_API_URL || process.env.VITE_API_BASE_URL || ''
     ),
   },
 });

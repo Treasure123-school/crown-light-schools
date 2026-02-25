@@ -2,7 +2,7 @@
 // In development, use relative paths (same origin)
 // In production (Vercel), use the Render backend URL from environment variable
 
-export const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || import.meta.env.VITE_API_URL || '';
+export const API_BASE_URL = (import.meta.env.VITE_API_BASE_URL || import.meta.env.VITE_API_URL || '').replace(/\/$/, '');
 
 // Helper function to build full API URL
 export function getApiUrl(path: string): string {
@@ -14,5 +14,6 @@ export function getApiUrl(path: string): string {
     return normalizedPath;
   }
   // In production, combine base URL with path
+  // Ensure no double slashes
   return `${API_BASE_URL}${normalizedPath}`;
 }

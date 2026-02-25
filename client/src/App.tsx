@@ -24,38 +24,11 @@ import ForgotPassword from "@/pages/ForgotPassword";
 import ResetPassword from "@/pages/ResetPassword";
 import JobVacancy from "@/pages/JobVacancy";
 
+// Student Exams - eagerly loaded to avoid dynamic import conflicts
+import StudentExams from "@/pages/portal/StudentExams";
+
 // Super Admin pages - lazy loaded
 const SuperAdminDashboard = lazy(() => import("@/pages/portal/SuperAdminDashboard"));
-const SuperAdminManagement = lazy(() => import("@/pages/portal/SuperAdminManagement"));
-const SuperAdminSettings = lazy(() => import("@/pages/portal/SuperAdminSettings"));
-const SuperAdminProfile = lazy(() => import("@/pages/portal/SuperAdminProfile"));
-const SuperAdminLogs = lazy(() => import("@/pages/portal/SuperAdminLogs"));
-const SuperAdminAllUsers = lazy(() => import("@/pages/portal/SuperAdminAllUsers"));
-const SuperAdminRolesPermissions = lazy(() => import("@/pages/portal/SuperAdminRolesPermissions"));
-const SuperAdminUserAccessControl = lazy(() => import("@/pages/portal/SuperAdminUserAccessControl"));
-const SuperAdminAuthenticationSettings = lazy(() => import("@/pages/portal/SuperAdminAuthenticationSettings"));
-const SuperAdminPlaceholder = lazy(() => import("@/pages/portal/SuperAdminPlaceholder"));
-const AdminRecoveryTools = lazy(() => import("@/pages/portal/AdminRecoveryTools"));
-
-// Super Admin Subject Manager pages (used in Super Admin routes)
-const SubjectsManagement = lazy(() => import("@/pages/portal/SubjectsManagement"));
-const UnifiedSubjectAssignment = lazy(() => import("@/pages/portal/UnifiedSubjectAssignment"));
-const AssignSubjectTeachers = lazy(() => import("@/pages/portal/AssignSubjectTeachers"));
-
-// Profile Onboarding (used for all authenticated users)
-const ProfileOnboarding = lazy(() => import("@/pages/ProfileOnboarding"));
-
-// Real-time updates are now handled by Socket.IO on the backend
-function RealtimeProvider({ children }: { children: React.ReactNode }) {
-  return <>{children}</>;
-}
-const SuperAdminSecurityPolicies = lazy(() => import("@/pages/portal/SuperAdminSecurityPolicies"));
-const SuperAdminBrandingTheme = lazy(() => import("@/pages/portal/SuperAdminBrandingTheme"));
-const SuperAdminIntegrations = lazy(() => import("@/pages/portal/SuperAdminIntegrations"));
-const SuperAdminBackupRestore = lazy(() => import("@/pages/portal/SuperAdminBackupRestore"));
-const SuperAdminApiAccess = lazy(() => import("@/pages/portal/SuperAdminApiAccess"));
-
-import StudentExams from "@/pages/portal/StudentExams";
 
 function Router() {
   return (
