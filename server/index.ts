@@ -37,7 +37,8 @@ const allowedOrigins = (process.env.NODE_ENV === 'development'
     /^https:\/\/.*\.vercel\.app$/,  // All Vercel deployments (production + preview)
     /^https:\/\/.*\.render\.com$/,
     /^https:\/\/.*\.onrender\.com$/,
-    ...(process.env.FRONTEND_URL ? [process.env.FRONTEND_URL.replace(/\/$/, '')] : [])
+    ...(process.env.FRONTEND_URL ? [process.env.FRONTEND_URL.replace(/\/$/, '')] : []),
+    ...(process.env.CORS_ORIGINS ? process.env.CORS_ORIGINS.split(',').map(o => o.trim()).filter(Boolean) : [])
   ].filter(Boolean)) as (string | RegExp)[];
 
 const corsOptions = {
