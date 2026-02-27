@@ -420,11 +420,15 @@ function sanitizeLogData(data: any): any {
   if (app.get("env") === "development" || isReplit) {
     // Serve Vite dev server on Replit or when NODE_ENV=development
     await setupVite(app, server);
-  } else {
-    // Serve static frontend in production
-    // This is critical for Render when FRONTEND_URL is not set or for single-server deployments
+  } else if (process.env.SERVE_FRONTEND === 'true') {
+    // Serve static frontend in production if explicitly requested
+    // This is critical for Replit/Vercel single-server deployments
     serveStatic(app);
   }
+  
+  // No catch-all for separate frontend deployments
+  app.get("/health", (req, res) => res.json({ status: "ok" }));
+
   // ALWAYS serve the app on the port specified in the environment variable PORT
   // Other ports are firewalled. Default to 5000 if not specified.
   // this serves both the API and the client.
