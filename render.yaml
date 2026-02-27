@@ -6,6 +6,8 @@ services:
     envVars:
       - key: VITE_API_URL
         sync: false
+      - key: NODE_VERSION
+        value: 20.18.0
     routes:
       - type: rewrite
         source: /*
@@ -17,13 +19,13 @@ services:
     region: oregon
     buildCommand: npm install --include=dev && npm run build:backend
     startCommand: npm run start
-    # Production Configuration:
-    # - Database: Neon PostgreSQL (via DATABASE_URL)
-    # - File Storage: Cloudinary (requires CLOUDINARY_* env vars)
-    # - No persistent disk needed in production!
     envVars:
       - key: NODE_ENV
         value: production
+      - key: NODE_VERSION
+        value: 20.18.0
+      - key: PORT
+        value: 10000
       # Database - Neon PostgreSQL
       - key: DATABASE_URL
         sync: false  # Set this in Render dashboard with your Neon connection string
@@ -32,8 +34,11 @@ services:
         generateValue: true
       - key: JWT_SECRET
         generateValue: true
-      # Frontend URL
+      # Frontend URL (set to your Render static site URL)
       - key: FRONTEND_URL
+        sync: false
+      # CORS Origins (comma-separated, set to your frontend URL)
+      - key: CORS_ORIGINS
         sync: false
       # Cloudinary - File Storage (Required for production)
       - key: CLOUDINARY_CLOUD_NAME

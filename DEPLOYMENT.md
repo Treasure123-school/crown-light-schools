@@ -1,29 +1,24 @@
-# Deployment Guide: Render (Backend) + Vercel (Frontend)
+# Deployment Guide: Render (Frontend Static Site + Backend Web Service)
 
-This guide will help you deploy your Treasure Home School Management System with the backend on Render and frontend on Vercel.
+This guide deploys the Treasure Home School Management System entirely on **Render**.
 
-## Architecture Overview
+## Architecture
 
-- **Backend (Render)**: Express.js server with PostgreSQL database
-- **Frontend (Vercel)**: React/Vite SPA with optimized build
-- **Database**: Supabase PostgreSQL (already configured)
-
-## Prerequisites
-
-1. GitHub account (to push your code)
-2. Render account ([render.com](https://render.com))
-3. Vercel account ([vercel.com](https://vercel.com))
-4. Supabase project with DATABASE_URL (already configured)
+| Component | Render Service Type | URL Pattern |
+|-----------|-------------------|-------------|
+| Frontend (React/Vite) | Static Site | `https://school-management-frontend.onrender.com` |
+| Backend (Express API) | Web Service | `https://school-management-backend.onrender.com` |
+| Database | External (Neon PostgreSQL) | Set via `DATABASE_URL` |
 
 ---
 
-## Part 1: Deploy Backend to Render
+## Part 1: Deploy Backend (Web Service)
 
 ### Step 1: Push Code to GitHub
 
 ```bash
 git add .
-git commit -m "Prepare for Render + Vercel deployment"
+git commit -m "Configure for Render deployment"
 git push origin main
 ```
 
@@ -32,234 +27,122 @@ git push origin main
 1. Go to [Render Dashboard](https://dashboard.render.com/)
 2. Click **"New +"** → **"Web Service"**
 3. Connect your GitHub repository
-4. Configure the service:
-   - **Name**: `treasure-home-backend` (or your choice)
+4. Configure:
+   - **Name**: `school-management-backend`
    - **Region**: Choose closest to your users
    - **Branch**: `main`
-   - **Build Command**: `npm install && npm run build`
+   - **Build Command**: `npm install --include=dev && npm run build:backend`
    - **Start Command**: `npm run start`
    - **Instance Type**: Free or paid tier
 
-### Step 3: Configure Environment Variables
+### Step 3: Set Environment Variables
 
-The `render.yaml` file automatically configures most environment variables, but you need to add:
+**Required** (set in Render dashboard → Environment):
 
-**Required Variables** (add manually in Render dashboard):
+| Variable | Value |
+|----------|-------|
+| `DATABASE_URL` | Your Neon PostgreSQL connection string |
+| `FRONTEND_URL` | `https://school-management-frontend.onrender.com` |
+| `JWT_SECRET` | Auto-generated or use `openssl rand -base64 48` |
+| `SESSION_SECRET` | Auto-generated or use `openssl rand -base64 48` |
 
-| Variable | Value | Notes |
-|----------|-------|-------|
-| `DATABASE_URL` | `your-supabase-connection-string` | From Supabase dashboard |
-| `FRONTEND_URL` | `https://your-app.vercel.app` | Add after Vercel deployment |
+**File Storage** (required for uploads):
 
-**Auto-Generated** (by Render):
-- `SESSION_SECRET` - Automatically generated secure random value
-- `JWT_SECRET` - Automatically generated secure random value
+| Variable | Value |
+|----------|-------|
+| `CLOUDINARY_CLOUD_NAME` | Your Cloudinary cloud name |
+| `CLOUDINARY_API_KEY` | Your Cloudinary API key |
+| `CLOUDINARY_API_SECRET` | Your Cloudinary API secret |
 
-**Optional** (for Google OAuth):
+**Optional**:
 
-| Variable | Value | Notes |
-|----------|-------|-------|
-| `GOOGLE_CLIENT_ID` | `your-google-oauth-client-id` | Optional: for Google login |
-| `GOOGLE_CLIENT_SECRET` | `your-google-oauth-secret` | Optional: for Google login |
-| `GOOGLE_REDIRECT_URI` | `https://your-backend.onrender.com/api/auth/google/callback` | Optional |
+| Variable | Value |
+|----------|-------|
+| `GOOGLE_CLIENT_ID` | For Google OAuth |
+| `GOOGLE_CLIENT_SECRET` | For Google OAuth |
+| `GOOGLE_CALLBACK_URL` | `https://school-management-backend.onrender.com/api/auth/google/callback` |
 
-**To generate secrets:**
-```bash
-# On Linux/Mac
-openssl rand -base64 48
-
-# Or use online generator
-https://www.random.org/strings/
-```
-
-### Step 4: Deploy
+### Step 4: Deploy & Verify
 
 1. Click **"Create Web Service"**
 2. Wait for deployment (5-10 minutes)
-3. Note your backend URL: `https://your-backend.onrender.com`
-4. Test health endpoint: `https://your-backend.onrender.com/api/health`
+3. Test health check: `https://school-management-backend.onrender.com/api/health`
 
 ---
 
-## Part 2: Deploy Frontend to Vercel
+## Part 2: Deploy Frontend (Static Site)
 
-### Step 1: Prepare Vercel Configuration
+### Step 1: Create Render Static Site
 
-The `vercel.json` file is already configured in your project.
-
-### Step 2: Deploy to Vercel
-
-**Option A: Via Vercel CLI**
-```bash
-npm i -g vercel
-vercel login
-vercel --prod
-```
-
-**Option B: Via Vercel Dashboard**
-1. Go to [Vercel Dashboard](https://vercel.com/dashboard)
-2. Click **"Add New..."** → **"Project"**
-3. Import your GitHub repository
+1. Go to [Render Dashboard](https://dashboard.render.com/)
+2. Click **"New +"** → **"Static Site"**
+3. Connect the **same** GitHub repository
 4. Configure:
-   - **Framework Preset**: Other (custom configuration)
-   - **Build Command**: `npm run build`
-   - **Output Directory**: `dist/public`
-   - **Install Command**: `npm install`
+   - **Name**: `school-management-frontend`
+   - **Branch**: `main`
+   - **Build Command**: `npm install --include=dev && npm run build:frontend`
+   - **Publish Directory**: `dist/public`
 
-### Step 3: Configure Frontend Environment Variables
+### Step 2: Set Environment Variables
 
-Add this environment variable in Vercel:
+| Variable | Value |
+|----------|-------|
+| `VITE_API_URL` | `https://school-management-backend.onrender.com` |
 
-| Variable | Value | Notes |
-|----------|-------|-------|
-| `VITE_API_URL` | `https://your-backend.onrender.com` | Your Render backend URL |
+### Step 3: Add Rewrite Rule
 
-**How to add in Vercel:**
-1. Go to Project Settings → Environment Variables
-2. Add `VITE_API_URL` with your Render backend URL
-3. Redeploy: `vercel --prod`
+In **Redirects/Rewrites** settings, add:
+- **Source**: `/*`
+- **Destination**: `/index.html`
+- **Action**: Rewrite
 
-### Step 4: Update Backend with Frontend URL
+> This ensures client-side routing (wouter) works — all paths serve `index.html`.
 
-Go back to Render and update the `FRONTEND_URL` environment variable:
-- Set it to your Vercel URL: `https://your-app.vercel.app`
-- This enables CORS for your frontend
+### Step 4: Deploy & Update Backend
+
+1. Deploy the static site
+2. Go back to the **backend** service → Environment
+3. Set `FRONTEND_URL` to your static site URL (e.g., `https://school-management-frontend.onrender.com`)
 
 ---
 
-## Part 3: Final Configuration
+## Part 3: Using render.yaml (Blueprint)
 
-### Update Google OAuth (if using)
+Alternatively, use the included `render.yaml` to deploy both services at once:
 
-If you're using Google authentication:
-
-1. Go to [Google Cloud Console](https://console.cloud.google.com/apis/credentials)
-2. Update OAuth 2.0 Client:
-   - **Authorized JavaScript origins**: Add `https://your-app.vercel.app`
-   - **Authorized redirect URIs**: Add `https://your-backend.onrender.com/api/auth/google/callback`
-
-### Test Your Deployment
-
-1. Visit your Vercel frontend: `https://your-app.vercel.app`
-2. Test login functionality
-3. Test API connectivity
-4. Verify database operations
+1. Go to [Render Dashboard](https://dashboard.render.com/)
+2. Click **"New +"** → **"Blueprint"**
+3. Connect your repository
+4. Render will detect `render.yaml` and create both services
+5. Set the `sync: false` env vars in each service's dashboard
 
 ---
 
 ## Troubleshooting
 
-### CORS Issues
-**Error**: "CORS policy: No 'Access-Control-Allow-Origin' header"
+### Blank Page After Deploy
+- Check browser console for errors
+- Verify `VITE_API_URL` is set correctly on the static site
+- Ensure the static site publish path is `dist/public`
+- Confirm the rewrite rule `/* → /index.html` is set
 
-**Solution**:
-- Ensure `FRONTEND_URL` is set in Render environment variables
-- Verify it matches your Vercel URL exactly (including https://)
-- Redeploy Render service after updating
+### CORS Errors
+- Ensure `FRONTEND_URL` on the backend matches your static site URL exactly (including `https://`)
+- Redeploy backend after updating `FRONTEND_URL`
 
-### 502 Bad Gateway on Render
-**Error**: Backend returns 502 errors
-
-**Solution**:
-- Check Render logs for errors
+### 502 Bad Gateway
+- Check Render logs for startup errors
 - Verify `DATABASE_URL` is correct
-- Ensure all required environment variables are set
-- Check if Supabase connection pooler is accessible
+- Ensure the backend health check passes at `/api/health`
 
-### Frontend Can't Reach Backend
-**Error**: "Network request failed" or "Failed to fetch"
-
-**Solution**:
-- Verify `VITE_API_URL` in Vercel matches Render backend URL
-- Ensure Render service is running (check dashboard)
-- Test backend health endpoint: `https://your-backend.onrender.com/api/health`
-
-### Database Migration Issues
-**Error**: "Migration failed" in Render logs
-
-**Solution**:
-- Migrations run automatically on startup
-- Check if DATABASE_URL has correct format
-- Verify Supabase database is accessible from Render
+### API Connection Failed
+- Verify `VITE_API_URL` points to the backend URL (not the frontend)
+- Test backend independently: `curl https://your-backend.onrender.com/api/health`
 
 ---
 
-## Monitoring & Logs
+## Free Tier Notes
 
-### Render Logs
-- Dashboard → Your Service → Logs
-- Shows server startup, API requests, and errors
-
-### Vercel Logs
-- Dashboard → Your Project → Deployments → View Function Logs
-- Shows build logs and runtime errors
-
-### Database Logs
-- Supabase Dashboard → Your Project → Logs
-- Shows database queries and errors
-
----
-
-## Cost Optimization
-
-### Render Free Tier
-- **Limitations**: Spins down after 15 minutes of inactivity, 750 hours/month
-- **Upgrade**: $7/month for always-on service
-- **Tip**: Free tier is fine for testing, but may have cold starts
-
-### Vercel Free Tier
-- **Limitations**: 100 GB bandwidth/month, 6000 build minutes/month
-- **Upgrade**: $20/month for Pro tier
-- **Tip**: Free tier is generous for most school applications
-
----
-
-## Security Checklist
-
-- [ ] Strong `SESSION_SECRET` and `JWT_SECRET` (64+ characters)
-- [ ] Database credentials secured (not in code)
-- [ ] CORS configured correctly (only your frontend URL)
-- [ ] HTTPS enforced (automatic on Render/Vercel)
-- [ ] Google OAuth credentials secured (if used)
-- [ ] Supabase connection uses SSL (`?sslmode=require`)
-
----
-
-## Maintenance
-
-### Update Code
-```bash
-# Make changes locally
-git add .
-git commit -m "Update description"
-git push origin main
-
-# Both Render and Vercel auto-deploy on push
-```
-
-### Manual Redeploy
-- **Render**: Dashboard → Service → Manual Deploy
-- **Vercel**: Dashboard → Project → Redeploy
-
-### Database Backups
-- **Supabase**: Automatic backups on paid tier
-- **Manual**: Export from Supabase dashboard
-
----
-
-## Support
-
-For issues:
-1. Check Render/Vercel logs
-2. Review this guide's Troubleshooting section
-3. Verify all environment variables are set correctly
-4. Test backend health endpoint
-5. Check CORS configuration
-
----
-
-**Deployment Complete! 🎉**
-
-Your school management system is now live with:
-- Backend: `https://your-backend.onrender.com`
-- Frontend: `https://your-app.vercel.app`
+- **Backend**: Spins down after 15 minutes of inactivity. First request after spin-down takes ~30 seconds.
+- **Static Site**: Always available, no cold starts.
+- Upgrade to paid ($7/month) for always-on backend.

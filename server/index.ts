@@ -20,7 +20,7 @@ const app = express();
 // Trust proxy - CRITICAL for Render deployment (enables secure cookies behind reverse proxy)
 app.set('trust proxy', 1);
 
-// CORS configuration for Vercel frontend, Replit dev, and localhost
+// CORS configuration for Render frontend, Replit dev, and localhost
 const allowedOrigins = (process.env.NODE_ENV === 'development'
   ? [
     'http://localhost:5173',
