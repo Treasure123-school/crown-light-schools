@@ -420,9 +420,9 @@ function sanitizeLogData(data: any): any {
   if (app.get("env") === "development" || isReplit) {
     // Serve Vite dev server on Replit or when NODE_ENV=development
     await setupVite(app, server);
-  } else if (process.env.SERVE_FRONTEND === 'true') {
-    // Serve static frontend in production if explicitly requested
-    // This is critical for Replit/Vercel single-server deployments
+  } else {
+    // In production, always serve the built frontend from dist/public
+    // serveStatic handles missing dist/public gracefully (logs warning and skips)
     serveStatic(app);
   }
 
