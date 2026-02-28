@@ -191,7 +191,7 @@ export default function PublicLayout({ children }: PublicLayoutProps) {
               </ul>
             </div>
           </div>
-          <div className="pt-8 border-t border-white/40 text-center text-[10px] text-white font-black uppercase tracking-widest">© {new Date().getFullYear()} {schoolName}. All Rights Reserved.</div>
+          <div className="pt-8 border-t border-white/40 text-center text-[10px] text-white font-black uppercase tracking-widest">© {new Date().getFullYear()} All Rights Reserved.</div>
         </div>
       </footer>
     </div>
