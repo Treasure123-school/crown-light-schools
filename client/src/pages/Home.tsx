@@ -164,6 +164,8 @@ export default function Home() {
                 src={heroStudents}
                 alt="Hero"
                 className="w-full h-full object-cover object-[center_20%]"
+                fetchPriority="high"
+                loading="eager"
               />
               <div className="absolute inset-0 bg-black/50" />
             </motion.div>
@@ -178,6 +180,8 @@ export default function Home() {
                 src={heroStudents}
                 alt="Hero"
                 className="w-full h-full object-cover object-[center_20%]"
+                fetchPriority="high"
+                loading="eager"
               />
               <div className="absolute inset-0 bg-black/50" />
             </motion.div>
@@ -274,6 +278,7 @@ export default function Home() {
                 src={schoolBuilding}
                 alt={DEFAULT_BRANDING.buildingAlt}
                 className="rounded-lg shadow-lg w-full h-[300px] md:h-[400px] lg:h-[450px] object-cover"
+                loading="lazy"
               />
             </motion.div>
           </div>
@@ -448,6 +453,9 @@ export default function Home() {
                         src={testimonials[currentTestimonial].img}
                         alt={testimonials[currentTestimonial].name}
                         className="w-14 h-14 rounded-full object-cover border-2 border-white shadow-md"
+                        loading="lazy"
+                        width="56"
+                        height="56"
                       />
                     ) : (
                       <div className="w-14 h-14 rounded-full bg-blue-100 flex items-center justify-center border-2 border-white shadow-md">
@@ -504,6 +512,7 @@ export default function Home() {
                   src={typeof img === 'string' && !img.startsWith('data:') && !img.startsWith('/') ? `/images/${img}` : img}
                   alt="Gallery"
                   className="w-full h-full object-cover hover:scale-110 transition-transform duration-700"
+                  loading="lazy"
                 />
               </motion.div>
             ))}

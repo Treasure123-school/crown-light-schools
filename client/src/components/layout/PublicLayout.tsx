@@ -103,6 +103,10 @@ export default function PublicLayout({ children }: PublicLayoutProps) {
                 src="/images/crown-light-new-logo.png"
                 alt="Crown Light School"
                 className="h-20 w-auto object-contain"
+                width="80"
+                height="80"
+                fetchPriority="high"
+                loading="eager"
               />
             </Link>
           </div>
@@ -166,6 +170,9 @@ export default function PublicLayout({ children }: PublicLayoutProps) {
                 src="/images/crown-light-new-logo.png"
                 alt="Crown Light School"
                 className="h-20 w-auto brightness-0 invert object-contain"
+                width="80"
+                height="80"
+                loading="lazy"
               />
               <p className="text-[13px] text-white font-bold leading-relaxed">Located at {schoolAddress}, we have a rich history of educational excellence.</p>
             </div>
