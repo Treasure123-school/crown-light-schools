@@ -24,8 +24,6 @@ export default function PublicLayout({ children }: PublicLayoutProps) {
   const [showHeader, setShowHeader] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
 
-  const isHomePage = location === '/';
-
   const { data: settings } = useQuery<SettingsData>({
     queryKey: ["/api/public/settings"],
   });
@@ -101,32 +99,11 @@ export default function PublicLayout({ children }: PublicLayoutProps) {
         <div className="container max-w-7xl mx-auto px-4 flex items-center justify-between gap-4">
           <div className="flex items-center gap-4">
             <Link href="/" className="flex items-center gap-4" onClick={() => setIsMobileMenuOpen(false)}>
-              {isHomePage ? (
-                <img
-                  src="/images/hardcoded-school-logo.png"
-                  alt="Logo"
-                  className="h-20 w-auto object-contain"
-                  style={{ maxHeight: '80px', maxWidth: 'none', objectFit: 'contain' }}
-                />
-              ) : settings?.schoolLogo ? (
-                <img
-                  src={settings.schoolLogo}
-                  alt="Logo"
-                  className="h-20 w-auto object-contain"
-                />
-              ) : null}
-              {!isHomePage && (
-                <div className="flex flex-col">
-                  <span className="text-gray-900 font-bold text-xl md:text-2xl tracking-tight leading-tight">
-                    {schoolName}
-                  </span>
-                  {settings?.schoolMotto && (
-                    <span className="text-blue-600 text-[10px] md:text-xs font-semibold tracking-wider uppercase">
-                      {settings.schoolMotto}
-                    </span>
-                  )}
-                </div>
-              )}
+              <img
+                src="/images/hardcoded-school-logo.png"
+                alt="Crown Light School"
+                className="h-20 w-auto object-contain"
+              />
             </Link>
           </div>
 
@@ -185,26 +162,12 @@ export default function PublicLayout({ children }: PublicLayoutProps) {
         <div className="container max-w-7xl mx-auto px-4">
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-16 mb-12">
             <div className="space-y-6">
-              {isHomePage ? (
-                <img
-                  src="/images/hardcoded-school-logo.png"
-                  alt="Logo"
-                  className="h-20 w-auto object-contain bg-white rounded p-2"
-                  style={{ maxHeight: '80px', maxWidth: 'none', objectFit: 'contain' }}
-                />
-              ) : settings?.schoolLogo ? (
-                <img
-                  src={settings.schoolLogo}
-                  alt="Logo"
-                  className="h-20 w-auto brightness-0 invert object-contain"
-                />
-              ) : null}
-              {!isHomePage && (
-                <p className="text-[13px] text-white font-bold leading-relaxed">{settings?.schoolName || DEFAULT_BRANDING.schoolName}, located at has a rich history of educational excellence.</p>
-              )}
-              {isHomePage && (
-                <p className="text-[13px] text-white font-bold leading-relaxed">Dedicated to academic excellence and moral uprightness.</p>
-              )}
+              <img
+                src="/images/hardcoded-school-logo.png"
+                alt="Crown Light School"
+                className="h-20 w-auto brightness-0 invert object-contain"
+              />
+              <p className="text-[13px] text-white font-bold leading-relaxed">Located at {schoolAddress}, we have a rich history of educational excellence.</p>
             </div>
             <div className="space-y-6">
               <h4 className="text-white font-black uppercase tracking-widest text-[11px] border-b border-white/40 pb-2">Useful Links</h4>

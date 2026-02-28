@@ -439,7 +439,6 @@ function sanitizeLogData(data: any): any {
   server.listen({
     port,
     host: "0.0.0.0",
-    reusePort: true,
   }, () => {
     console.log(`serving on port ${port}`);
   });
