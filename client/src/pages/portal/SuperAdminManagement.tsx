@@ -1,4 +1,4 @@
-
+﻿
 import { useState } from "react";
 import { useQuery, useMutation } from "@tanstack/react-query";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
@@ -249,7 +249,7 @@ export default function SuperAdminManagement() {
                     <FormItem>
                       <FormLabel>Email Address</FormLabel>
                       <FormControl>
-                        <Input placeholder="admin@treasurehome.com" {...field} />
+                        <Input placeholder="admin@school.com" {...field} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>

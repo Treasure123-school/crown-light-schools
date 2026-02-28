@@ -1,9 +1,11 @@
-import PublicLayout from '@/components/layout/PublicLayout';
+﻿import PublicLayout from '@/components/layout/PublicLayout';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
+import { useState } from "react";
+import { DEFAULT_BRANDING } from "@/config/branding";
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
@@ -34,13 +36,13 @@ type ContactForm = z.infer<typeof contactSchema>;
 
 export default function Contact() {
   const { toast } = useToast();
-  
+
   const { data: settings } = useQuery<SettingsData>({
     queryKey: ["/api/public/settings"],
   });
 
-  const schoolName = settings?.schoolName || "Treasure-Home School";
-  const schoolAddress = settings?.schoolAddress || "Seriki-Soyinka, Ifo, Ogun State, Nigeria";
+  const schoolName = settings?.schoolName || DEFAULT_BRANDING.schoolName;
+  const schoolAddress = settings?.schoolAddress || DEFAULT_BRANDING.schoolAddress;
   const websiteTitle = settings?.websiteTitle || `${schoolName} - Contact Us`;
 
   let schoolPhones: Array<{ countryCode: string; number: string }> = [];
@@ -52,19 +54,19 @@ export default function Contact() {
     console.error("Error parsing settings JSON", e);
   }
 
-  const displayPhones = schoolPhones.length > 0 
-    ? schoolPhones.map(p => `${p.countryCode}${p.number}`).join(', ') 
+  const displayPhones = schoolPhones.length > 0
+    ? schoolPhones.map(p => `${p.countryCode}${p.number}`).join(', ')
     : "080-1734-5676";
-  const displayEmails = schoolEmails.length > 0 
-    ? schoolEmails.join(', ') 
-    : "info@treasurehomeschool.com";
+  const displayEmails = schoolEmails.length > 0
+    ? schoolEmails.join(', ')
+    : "info@school.com";
 
   useEffect(() => {
     if (websiteTitle) {
       document.title = websiteTitle;
     }
   }, [websiteTitle]);
-  
+
   const {
     register,
     handleSubmit,
@@ -136,7 +138,7 @@ export default function Contact() {
           <div className="absolute inset-0 bg-black/60" />
         </div>
         <div className="container relative z-10 text-center text-white px-4">
-          <motion.h1 
+          <motion.h1
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             className="text-4xl md:text-6xl font-bold mb-4"
@@ -144,14 +146,14 @@ export default function Contact() {
           >
             Get in Touch
           </motion.h1>
-          <motion.p 
+          <motion.p
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 }}
             className="text-lg md:text-xl text-gray-200"
             data-testid="text-contact-subtitle"
           >
-            We're here to answer your questions and help you discover the Treasure-Home difference
+            We're here to answer your questions and help you learn about our school
           </motion.p>
         </div>
       </section>
@@ -163,18 +165,16 @@ export default function Contact() {
             {contactInfo.map((info, index) => (
               <Card key={index} className="hover-elevate shadow-sm border border-border" data-testid={`card-contact-info-${index}`}>
                 <CardContent className="p-6 text-center">
-                  <div className={`w-16 h-16 rounded-lg flex items-center justify-center mx-auto mb-4 ${
-                    info.color === 'primary' ? 'bg-primary/10' :
-                    info.color === 'secondary' ? 'bg-secondary/10' :
-                    info.color === 'green' ? 'bg-green-100' :
-                    'bg-blue-100'
-                  }`}>
-                    <info.icon className={`${
-                      info.color === 'primary' ? 'text-primary' :
-                      info.color === 'secondary' ? 'text-secondary' :
-                      info.color === 'green' ? 'text-green-600' :
-                      'text-blue-600'
-                    } w-8 h-8`} />
+                  <div className={`w-16 h-16 rounded-lg flex items-center justify-center mx-auto mb-4 ${info.color === 'primary' ? 'bg-primary/10' :
+                      info.color === 'secondary' ? 'bg-secondary/10' :
+                        info.color === 'green' ? 'bg-green-100' :
+                          'bg-blue-100'
+                    }`}>
+                    <info.icon className={`${info.color === 'primary' ? 'text-primary' :
+                        info.color === 'secondary' ? 'text-secondary' :
+                          info.color === 'green' ? 'text-green-600' :
+                            'text-blue-600'
+                      } w-8 h-8`} />
                   </div>
                   <h3 className="font-semibold mb-2" data-testid={`text-contact-info-title-${index}`}>
                     {info.title}
@@ -247,9 +247,9 @@ export default function Contact() {
                     )}
                   </div>
 
-                  <Button 
-                    type="submit" 
-                    className="w-full" 
+                  <Button
+                    type="submit"
+                    className="w-full"
                     disabled={contactMutation.isPending}
                     data-testid="button-send-message"
                   >
@@ -266,13 +266,13 @@ export default function Contact() {
                   Our Location
                 </h2>
                 <div className="aspect-video w-full rounded-lg overflow-hidden border border-border mb-6">
-                  <iframe 
-                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3962.774577134375!2d3.197!3d6.674!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zNsKwNDAnMjYuNCJOIDPCsDExJzQ5LjIiRQ!5e0!3m2!1sen!2sng!4v1700000000000!5m2!1sen!2sng" 
-                    width="100%" 
-                    height="100%" 
-                    style={{ border: 0 }} 
-                    allowFullScreen={true} 
-                    loading="lazy" 
+                  <iframe
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3962.774577134375!2d3.197!3d6.674!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zNsKwNDAnMjYuNCJOIDPCsDExJzQ5LjIiRQ!5e0!3m2!1sen!2sng!4v1700000000000!5m2!1sen!2sng"
+                    width="100%"
+                    height="100%"
+                    style={{ border: 0 }}
+                    allowFullScreen={true}
+                    loading="lazy"
                     referrerPolicy="no-referrer-when-downgrade"
                   ></iframe>
                 </div>

@@ -1,3 +1,4 @@
+﻿import { DEFAULT_BRANDING } from '@/config/branding';
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Timer } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -35,7 +36,7 @@ export function ExamHeader({
   });
 
   const displayLogo = settings?.schoolLogo || schoolLogo;
-  const schoolName = settings?.schoolName || "Treasure-Home School";
+  const schoolName = settings?.schoolName || DEFAULT_BRANDING.schoolName;
 
   const formatTime = (seconds: number) => {
     const mins = Math.floor(seconds / 60);

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+﻿import { useState } from 'react';
 import { useQuery, useMutation } from '@tanstack/react-query';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -104,7 +104,7 @@ export default function JobVacancy() {
             Career Opportunities
           </h1>
           <p className="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
-            Join our team of dedicated educators at Treasure-Home School. Shape young minds and build a rewarding career in education.
+            Join our team of dedicated educators. Shape young minds and build a rewarding career in education.
           </p>
         </div>
 
@@ -292,7 +292,7 @@ export default function JobVacancy() {
                     <Textarea
                       id="bio"
                       {...register('bio')}
-                      placeholder="Tell us about yourself, your teaching philosophy, and why you'd like to join Treasure-Home School..."
+                      placeholder="Tell us about yourself, your teaching philosophy, and why you'd like to join our school..."
                       rows={6}
                       data-testid="input-bio"
                     />

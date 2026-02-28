@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { DEFAULT_BRANDING } from '@/config/branding';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -31,7 +32,7 @@ export default function ForgotPassword() {
     queryKey: ["/api/superadmin/settings"],
   });
 
-  const schoolName = settings?.schoolName || "Treasure-Home School";
+  const schoolName = settings?.schoolName || DEFAULT_BRANDING.schoolName;
   const schoolMotto = settings?.schoolMotto || "Honesty and Success";
 
   const {
@@ -172,7 +173,7 @@ export default function ForgotPassword() {
                     data-testid="input-identifier"
                   />
                   <p className="text-xs text-muted-foreground mt-2">
-                    <strong>Students/Parents:</strong> Use your THS username (e.g., THS-STU-2025-PR3-001)<br/>
+                    <strong>Students/Parents:</strong> Use your THS username (e.g., THS-STU-2025-PR3-001)<br />
                     <strong>Teachers/Admins:</strong> Password reset is handled through Google. If locked out, contact Admin.
                   </p>
                   {errors.identifier && (

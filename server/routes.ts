@@ -1,4 +1,4 @@
-import express, { type Express, type Request, type Response, type NextFunction } from "express";
+﻿import express, { type Express, type Request, type Response, type NextFunction } from "express";
 import { createServer, type Server } from "http";
 import { storage, db } from "./storage";
 import * as schema from "@shared/schema.pg";
@@ -5006,7 +5006,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Delete demo accounts - admin only
   app.post("/api/admin/delete-demo-accounts", authenticateUser, authorizeRoles(ROLES.ADMIN), async (req, res) => {
     try {
-      const demoEmails = ['admin@demo.com', 'teacher@demo.com', 'admin@treasure.com'];
+      const demoEmails = ['admin@demo.com', 'teacher@demo.com', 'admin@demo.com'];
       const deletedUsers = [];
       const errors = [];
 
@@ -5712,7 +5712,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
                   // Detailed message for suspended parent accounts
                   return res.status(403).json({
                     message: "Account Suspended - Security Alert",
-                    description: "Your parent account has been automatically suspended due to multiple failed login attempts. This security measure protects your child's information from unauthorized access.\n\n📞 To Restore Your Account:\nContact School Administrator:\n📧 Email: treasurehomeschool@gmail.com\n📞 Call: School office during working hours\n\n💡 Have your child's information ready for verification.",
+                    description: "Your parent account has been automatically suspended due to multiple failed login attempts. This security measure protects your child's information from unauthorized access.\n\n📞 To Restore Your Account:\nContact School Administrator:\n📧 Email: admin@school.com\n📞 Call: School office during working hours\n\n💡 Have your child's information ready for verification.",
                     statusType: "suspended_parent"
                   });
                 } else {
@@ -5786,7 +5786,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
           // Detailed message for suspended parent accounts - shown on every attempt after suspension
           return res.status(403).json({
             message: "Account Suspended - Security Alert",
-            description: "Your parent account has been automatically suspended due to multiple failed login attempts. This security measure protects your child's information from unauthorized access.\n\n📞 To Restore Your Account:\nContact School Administrator:\n📧 Email: treasurehomeschool@gmail.com\n📞 Call: School office during working hours\n\n💡 Have your child's information ready for verification.",
+            description: "Your parent account has been automatically suspended due to multiple failed login attempts. This security measure protects your child's information from unauthorized access.\n\n📞 To Restore Your Account:\nContact School Administrator:\n📧 Email: admin@school.com\n📞 Call: School office during working hours\n\n💡 Have your child's information ready for verification.",
             statusType: "suspended_parent"
           });
         } else {
@@ -6246,7 +6246,7 @@ Please login and ${forceChange ? 'change your password immediately' : 'update yo
 If you did not request this password reset, please contact the school administration immediately.
 
 Thank you,
-Treasure-Home School Administration
+School Management System Administration
 `;
 
       // In development, log the notification

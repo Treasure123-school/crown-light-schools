@@ -1,3 +1,4 @@
+﻿import { DEFAULT_BRANDING } from '@/config/branding';
 import { Link, useLocation } from 'wouter';
 import { Menu, X, Phone, Mail, MapPin, ArrowRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -52,8 +53,8 @@ export default function PublicLayout({ children }: PublicLayoutProps) {
     };
   }, [lastScrollY]);
 
-  const schoolName = settings?.schoolName || "Treasure-Home School";
-  const schoolAddress = settings?.schoolAddress || "Seriki-Soyinka, Ifo, Ogun State, Nigeria";
+  const schoolName = settings?.schoolName || DEFAULT_BRANDING.schoolName;
+  const schoolAddress = settings?.schoolAddress || DEFAULT_BRANDING.schoolAddress;
   const schoolPhones: Array<{ countryCode: string; number: string }> = (() => {
     try {
       const phones = settings?.schoolPhones || "[]";
@@ -183,7 +184,7 @@ export default function PublicLayout({ children }: PublicLayoutProps) {
                   className="h-20 w-auto brightness-0 invert object-contain" 
                 />
               ) : null}
-              <p className="text-[13px] text-white font-bold leading-relaxed">{settings?.schoolName || "Treasure-Home School"}, located at Seriki-Soyinka, Ifo Local Government, Ogun State, Nigeria, has a rich history of educational excellence.</p>
+              <p className="text-[13px] text-white font-bold leading-relaxed">{settings?.schoolName || DEFAULT_BRANDING.schoolName}, located at has a rich history of educational excellence.</p>
             </div>
             <div className="space-y-6">
               <h4 className="text-white font-black uppercase tracking-widest text-[11px] border-b border-white/40 pb-2">Useful Links</h4>

@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { DEFAULT_BRANDING } from '@/config/branding';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -39,7 +40,7 @@ export default function ResetPassword() {
     refetchInterval: 5000,
   });
 
-  const schoolName = settings?.schoolName || "Treasure-Home School";
+  const schoolName = settings?.schoolName || DEFAULT_BRANDING.schoolName;
   const schoolMotto = settings?.schoolMotto || "Honesty and Success";
 
   const [token, setToken] = useState<string | null>(null);
@@ -190,14 +191,14 @@ export default function ResetPassword() {
 
                 <div className="p-3 bg-blue-50 dark:bg-blue-950/30 rounded-lg border border-blue-200 dark:border-blue-800">
                   <p className="text-sm text-blue-800 dark:text-blue-200">
-                    <strong>Security Tips:</strong> Use a mix of uppercase and lowercase letters, numbers, 
+                    <strong>Security Tips:</strong> Use a mix of uppercase and lowercase letters, numbers,
                     and symbols. Avoid using personal information.
                   </p>
                 </div>
 
-                <Button 
-                  type="submit" 
-                  className="w-full" 
+                <Button
+                  type="submit"
+                  className="w-full"
                   disabled={resetPasswordMutation.isPending}
                   data-testid="button-submit"
                 >
@@ -223,8 +224,8 @@ export default function ResetPassword() {
                 </div>
 
                 <div className="text-center">
-                  <Link 
-                    href="/login" 
+                  <Link
+                    href="/login"
                     className="inline-flex items-center gap-2 text-primary text-sm font-medium hover:underline"
                     data-testid="link-login"
                   >
@@ -259,8 +260,8 @@ export default function ResetPassword() {
                 </div>
 
                 <div className="text-center space-y-3 pt-2">
-                  <Link 
-                    href="/forgot-password" 
+                  <Link
+                    href="/forgot-password"
                     className="block"
                     data-testid="link-forgot-password"
                   >
@@ -269,8 +270,8 @@ export default function ResetPassword() {
                       Request New Reset Link
                     </Button>
                   </Link>
-                  <Link 
-                    href="/login" 
+                  <Link
+                    href="/login"
                     className="inline-flex items-center gap-1.5 text-muted-foreground text-sm hover:text-foreground"
                     data-testid="link-login"
                   >

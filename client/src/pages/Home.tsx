@@ -6,6 +6,7 @@ import { Link } from "wouter";
 import { useQuery } from "@tanstack/react-query";
 import { ArrowRight, User } from "lucide-react";
 import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion";
+import { DEFAULT_BRANDING } from "@/config/branding";
 import girlsImage from "@/assets/girls-image.png";
 import gallery1 from "@/assets/gallery-1.png";
 import gallery2 from "@/assets/gallery-2.png";
@@ -58,8 +59,8 @@ export default function Home() {
     });
   }, [scrollY]);
 
-  const schoolName = settings?.schoolName || "Treasure-Home School";
-  const schoolAddress = settings?.schoolAddress || "Seriki, Ogun State";
+  const schoolName = settings?.schoolName || DEFAULT_BRANDING.schoolName;
+  const schoolAddress = settings?.schoolAddress || DEFAULT_BRANDING.schoolAddress;
   const schoolLogo = settings?.schoolLogo || "";
 
   let schoolPhones: Array<{ countryCode: string; number: string }> = [];
@@ -150,7 +151,7 @@ export default function Home() {
       <section className="relative h-[70vh] flex items-center justify-center overflow-hidden">
         <AnimatePresence>
           {isAtTop && (
-            <motion.div 
+            <motion.div
               key="hero-bg"
               initial={{ opacity: 0, scale: 1.1 }}
               animate={{ opacity: 1, scale: 1 }}
@@ -168,7 +169,7 @@ export default function Home() {
             </motion.div>
           )}
           {!isAtTop && (
-            <motion.div 
+            <motion.div
               key="hero-bg-scrolled"
               style={{ y }}
               className="absolute inset-0 z-0"
@@ -227,7 +228,7 @@ export default function Home() {
               transition={{ delay: 0.9, duration: 0.6 }}
               className="text-sm md:text-base mb-8 text-gray-200 italic font-medium max-w-2xl mx-auto"
             >
-              Treasure Home School is a school where qualitative education and
+              A school where qualitative education and
               moral excellence shape confident learners.
             </motion.p>
             <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} transition={{ delay: 1.1, duration: 0.5 }} className="flex flex-row gap-3 justify-center items-center">
@@ -250,7 +251,7 @@ export default function Home() {
                 <div className="w-12 h-[2px] bg-gradient-to-r from-[#0000FF] to-[#00BFFF]" />
               </div>
               <p className="text-[16px] md:text-[18px] text-gray-600 leading-relaxed mb-6">
-                Treasure Home School is a private educational institution
+                We are a private educational institution
                 committed to providing quality education and strong moral
                 upbringing. We believe every child is unique and deserves
                 careful guidance to discover their full potential.
@@ -271,7 +272,7 @@ export default function Home() {
             <motion.div {...fadeIn} className="flex-1 w-full lg:w-1/2">
               <img
                 src={schoolBuilding}
-                alt="Treasure Home School Building"
+                alt={DEFAULT_BRANDING.buildingAlt}
                 className="rounded-lg shadow-lg w-full h-[300px] md:h-[400px] lg:h-[450px] object-cover"
               />
             </motion.div>
@@ -321,7 +322,7 @@ export default function Home() {
                   Why Choose
                   <br />
                   <span className="bg-gradient-to-r from-[#0000FF] to-[#00BFFF] bg-clip-text text-transparent">
-                    Treasure-Home
+                    Our
                   </span>
                   <br />
                   School?
@@ -331,10 +332,10 @@ export default function Home() {
 
               <div className="space-y-6">
                 <p className="text-[15px] md:text-[16px] text-gray-600 leading-relaxed">
-                  At Treasure-Home School, Seriki-Soyinka, we don't just
+                  At our school, we don't just
                   teach—we inspire academic excellence and deep-rooted moral
                   values. Our vision is to be a sanctuary of brilliance and
-                  character development in Ogun State and beyond.
+                  character development for our community and beyond.
                 </p>
                 <p className="text-[15px] md:text-[16px] text-gray-600 leading-relaxed">
                   We are dedicated to equipping our students with the critical
@@ -346,8 +347,8 @@ export default function Home() {
               </div>
 
               <div className="pt-4 flex justify-start">
-                <Button 
-                  asChild 
+                <Button
+                  asChild
                   className="enroll-button-custom h-12 md:h-14 px-8 md:px-10 transition-all duration-300 rounded-lg flex items-center gap-3 w-full sm:w-auto shadow-lg hover:shadow-blue-500/25"
                 >
                   <Link href="/login">
@@ -473,9 +474,8 @@ export default function Home() {
               <button
                 key={i}
                 onClick={() => setCurrentTestimonial(i)}
-                className={`w-2.5 h-2.5 rounded-full transition-all duration-300 ${
-                  currentTestimonial === i ? "bg-[#0000FF] w-6" : "bg-gray-300"
-                }`}
+                className={`w-2.5 h-2.5 rounded-full transition-all duration-300 ${currentTestimonial === i ? "bg-[#0000FF] w-6" : "bg-gray-300"
+                  }`}
                 aria-label={`Go to testimonial ${i + 1}`}
               />
             ))}
@@ -521,8 +521,8 @@ export default function Home() {
       <section className="py-24 bg-gray-50">
         <div className="container px-4 max-w-4xl mx-auto">
           <h2 className="section-title text-center">Frequently Asked Questions</h2>
-          <p className="section-subtitle text-center">Find answers to common questions about Treasure-Home School.</p>
-          
+          <p className="section-subtitle text-center">Find answers to common questions about our school.</p>
+
           <Accordion type="single" collapsible className="w-full space-y-4">
             <AccordionItem value="item-1" className="border border-gray-200 rounded-lg bg-white px-6">
               <AccordionTrigger className="text-left font-bold py-6 hover:no-underline">What is the school curriculum?</AccordionTrigger>

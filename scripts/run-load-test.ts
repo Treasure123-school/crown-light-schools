@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Load Test Runner Script
  * Simulates concurrent users to test system performance
  * Run with: npx tsx scripts/run-load-test.ts
@@ -174,7 +174,7 @@ async function runScenario(
 
 async function runLoadTests() {
   console.log('='.repeat(60));
-  console.log('  LOAD TEST SUITE - Treasure-Home School Portal');
+  console.log('  LOAD TEST SUITE - School Management System Portal');
   console.log('='.repeat(60));
   console.log(`  Target: ${BASE_URL}`);
   console.log(`  Started at: ${new Date().toISOString()}`);

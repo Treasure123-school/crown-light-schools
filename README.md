@@ -1,1 +1,1 @@
-# Crown-light-school
+﻿# School Management System

@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Scalability Configuration Module
  * 
  * Prepares the system for horizontal scaling to support 500-1000+ concurrent users.
@@ -23,7 +23,7 @@ const redisUrl = process.env.REDIS_URL || process.env.KV_URL;
 const hasRedis = !!redisUrl;
 
 // Session configuration constants
-const SESSION_SECRET = process.env.SESSION_SECRET || 'treasure-home-school-session-secret-dev';
+const SESSION_SECRET = process.env.SESSION_SECRET || 'school-portal-session-secret-dev';
 const SESSION_MAX_AGE = 24 * 60 * 60 * 1000; // 24 hours
 const SESSION_COOKIE_NAME = 'ths.sid';
 

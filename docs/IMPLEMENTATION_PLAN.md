@@ -1,4 +1,4 @@
-# Treasure Home School - Teacher/Student/Department/Class Assignment & Report Card Automation
+﻿# School Management System - Teacher/Student/Department/Class Assignment & Report Card Automation
 ## Phase 0: Discovery & Pre-Change Plan
 
 **Generated:** November 30, 2025  

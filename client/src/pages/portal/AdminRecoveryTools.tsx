@@ -1,4 +1,4 @@
-
+﻿
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -203,7 +203,7 @@ export default function AdminRecoveryTools() {
   };
 
   const handleDeleteDemoAccounts = () => {
-    if (window.confirm('Are you sure you want to delete all demo accounts (admin@demo.com, teacher@demo.com, admin@treasure.com)? This action cannot be undone and will remove all their data.')) {
+    if (window.confirm('Are you sure you want to delete all demo accounts (admin@demo.com, teacher@demo.com, admin@demo.com)? This action cannot be undone and will remove all their data.')) {
       deleteDemoAccountsMutation.mutate();
     }
   };
@@ -521,7 +521,7 @@ export default function AdminRecoveryTools() {
                     <ul className="text-sm text-orange-700 dark:text-orange-300 ml-4 mt-2 list-disc">
                       <li>admin@demo.com</li>
                       <li>teacher@demo.com</li>
-                      <li>admin@treasure.com</li>
+                      <li>admin@demo.com</li>
                     </ul>
                     <p className="text-sm text-orange-700 dark:text-orange-300 mt-2">
                       <strong>Warning:</strong> This action cannot be undone. All exams, announcements, and related data will be removed.

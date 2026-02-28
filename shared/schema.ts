@@ -1,4 +1,4 @@
-import { sql } from "drizzle-orm";
+﻿import { sql } from "drizzle-orm";
 import { sqliteTable, text, integer, index, uniqueIndex } from "drizzle-orm/sqlite-core";
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
@@ -304,10 +304,10 @@ export const systemSettings = sqliteTable("system_settings", {
   primaryColor: text("primary_color").notNull().default('#3b82f6'),
   secondaryColor: text("secondary_color").notNull().default('#1e293b'),
   defaultTheme: text("default_theme").notNull().default('light'), // 'light', 'dark'
-  loginPageText: text("login_page_text").notNull().default('Welcome to Treasure Home School Portal'),
+  loginPageText: text("login_page_text").notNull().default('Welcome to School Management Portal'),
   dashboardWelcomeMessage: text("dashboard_welcome_message").notNull().default('Welcome back to your dashboard'),
   // General Configuration
-  portalName: text("portal_name").notNull().default('Treasure Home School Portal'),
+  portalName: text("portal_name").notNull().default('School Management Portal'),
   timezone: text("timezone").notNull().default('Africa/Lagos'),
   language: text("language").notNull().default('en'),
   dateFormat: text("date_format").notNull().default('DD/MM/YYYY'),

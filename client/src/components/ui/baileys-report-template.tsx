@@ -1,3 +1,4 @@
+﻿import { DEFAULT_BRANDING } from '@/config/branding';
 import { forwardRef } from 'react';
 import logoPath from '@assets/school-logo.png';
 
@@ -153,10 +154,10 @@ export const BaileysReportTemplate = forwardRef<HTMLDivElement, BaileysReportTem
   reportCard,
   testWeight = 40,
   examWeight = 60,
-  schoolName = "TREASURE-HOME SCHOOL",
-  schoolAddress = "Seriki-Soyinka, Ifo, Ogun State, Nigeria",
+  schoolName = DEFAULT_BRANDING.schoolName,
+  schoolAddress = DEFAULT_BRANDING.schoolAddress,
   schoolPhone = "08012345678",
-  schoolEmail = "info@treasurehomeschool.com",
+  schoolEmail = "info@school.com",
   schoolMotto = "Honesty and Success",
   schoolLogo: customLogo
 }, ref) => {

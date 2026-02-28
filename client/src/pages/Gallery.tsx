@@ -1,4 +1,5 @@
 import PublicLayout from '@/components/layout/PublicLayout';
+import { DEFAULT_BRANDING } from '@/config/branding';
 import { Card, CardContent } from '@/components/ui/card';
 import { useQuery } from '@tanstack/react-query';
 import { motion } from 'framer-motion';
@@ -21,7 +22,7 @@ export default function Gallery() {
     queryKey: ["/api/public/settings"],
   });
 
-  const schoolName = settings?.schoolName || "Treasure-Home School";
+  const schoolName = settings?.schoolName || DEFAULT_BRANDING.schoolName;
 
   const images = [
     { id: 1, src: gallery1, alt: 'School Activity 1' },
@@ -45,7 +46,7 @@ export default function Gallery() {
           <div className="absolute inset-0 bg-black/60" />
         </div>
         <div className="container relative z-10 text-center text-white px-4">
-          <motion.h1 
+          <motion.h1
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             className="text-4xl md:text-6xl font-bold mb-4"
@@ -53,7 +54,7 @@ export default function Gallery() {
           >
             School Gallery
           </motion.h1>
-          <motion.p 
+          <motion.p
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 }}
@@ -99,17 +100,17 @@ export default function Gallery() {
             <div className="flex flex-col lg:flex-row items-center gap-12">
               <div className="flex-1 w-full lg:w-1/2 rounded-lg overflow-hidden shadow-md h-[400px]">
                 <iframe
-                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15848.48911295384!2d3.220197479532822!3d6.75510688632612!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x103b987621c166d1%3A0xcb1b5e5899c7c25c!2sSeriki%20Sotinka%2C%20Ogun%20State%2C%20Nigeria!5e0!3m2!1sen!2sng!4v1706886326120!5m2!1sen!2sng"
+                  src="about:blank"
                   width="100%"
                   height="100%"
                   style={{ border: 0 }}
                   allowFullScreen={true}
                   loading="lazy"
                   referrerPolicy="no-referrer-when-downgrade"
-                  title="Treasure-Home School Location"
+                  title="School Location Map"
                 ></iframe>
               </div>
-              
+
               <div className="flex-1 text-left space-y-6">
                 <h2 className="text-3xl md:text-4xl font-bold text-gray-900">
                   Need more information<br />about our school?

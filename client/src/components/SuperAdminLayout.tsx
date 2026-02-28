@@ -1,3 +1,4 @@
+﻿import { DEFAULT_BRANDING } from '@/config/branding';
 import { ReactNode, useState, useEffect } from "react";
 import { useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
@@ -61,7 +62,7 @@ export default function SuperAdminLayout({ children }: SuperAdminLayoutProps) {
     refetchInterval: 5000,
   });
 
-  const schoolName = settings?.schoolName || "Treasure-Home School";
+  const schoolName = settings?.schoolName || DEFAULT_BRANDING.schoolName;
   const schoolMotto = settings?.schoolMotto || "Qualitative Education & Moral Excellence";
   const schoolLogoUrl = settings?.schoolLogo || schoolLogo;
 
@@ -411,7 +412,7 @@ export default function SuperAdminLayout({ children }: SuperAdminLayoutProps) {
                   <DropdownMenuLabel className="font-normal p-3">
                     <div className="flex flex-col space-y-1">
                       <p className="text-sm font-bold leading-none text-gray-900 dark:text-gray-100">{user?.firstName} {user?.lastName}</p>
-                      <p className="text-xs leading-none text-gray-500 dark:text-gray-400">superadmin@treasurehome.com</p>
+                      <p className="text-xs leading-none text-gray-500 dark:text-gray-400">superadmin@school.com</p>
                     </div>
                   </DropdownMenuLabel>
                   <DropdownMenuSeparator className="bg-gray-100 dark:bg-gray-800" />

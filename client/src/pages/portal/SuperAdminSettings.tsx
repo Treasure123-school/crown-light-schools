@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+﻿import { useState, useEffect } from "react";
 import SuperAdminLayout from "@/components/SuperAdminLayout";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -60,7 +60,7 @@ export default function SuperAdminSettings() {
     schoolAddress: "",
     schoolPhones: "[]",
     schoolEmails: "[]",
-    portalName: "Treasure Home School Portal",
+    portalName: "YOUR SCHOOL NAME Portal",
     timezone: "Africa/Lagos",
     language: "en",
     dateFormat: "DD/MM/YYYY",
@@ -84,7 +84,7 @@ export default function SuperAdminSettings() {
         schoolAddress: settings.schoolAddress || "",
         schoolPhones: settings.schoolPhones || "[]",
         schoolEmails: settings.schoolEmails || "[]",
-        portalName: settings.portalName || "Treasure Home School Portal",
+        portalName: settings.portalName || "YOUR SCHOOL NAME Portal",
         timezone: settings.timezone || "Africa/Lagos",
         language: settings.language || "en",
         dateFormat: settings.dateFormat || "DD/MM/YYYY",
@@ -465,7 +465,7 @@ export default function SuperAdminSettings() {
                 disabled={!isEditing}
                 value={formData.footerText}
                 onChange={(e) => setFormData({...formData, footerText: e.target.value})}
-                placeholder="e.g. © 2026 Treasure Home School. All Rights Reserved."
+                placeholder="e.g. © 2026 YOUR SCHOOL NAME. All Rights Reserved."
               />
             </div>
           </CardContent>

@@ -1,6 +1,6 @@
-# Deployment Guide: Render (Frontend Static Site + Backend Web Service)
+﻿# Deployment Guide: Render (Frontend Static Site + Backend Web Service)
 
-This guide deploys the Treasure Home School Management System entirely on **Render**.
+This guide deploys the School Management System Management System entirely on **Render**.
 
 ## Architecture
 

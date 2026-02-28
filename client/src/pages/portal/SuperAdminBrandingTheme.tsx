@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+﻿import { useState, useEffect } from "react";
 import { getApiUrl } from '@/config/api';
 import SuperAdminLayout from "@/components/SuperAdminLayout";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -390,7 +390,7 @@ export default function SuperAdminBrandingTheme() {
                 disabled={!isEditing}
                 value={formData.loginPageText}
                 onChange={(e) => setFormData({ ...formData, loginPageText: e.target.value })}
-                placeholder="e.g. Welcome to Treasure Home School Portal"
+                placeholder="e.g. Welcome to YOUR SCHOOL NAME Portal"
               />
             </div>
             <div className="space-y-2">

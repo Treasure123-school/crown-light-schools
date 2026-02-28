@@ -1,3 +1,4 @@
+﻿import { DEFAULT_BRANDING } from '@/config/branding';
 import { useQuery } from "@tanstack/react-query";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -27,7 +28,7 @@ export default function SuperAdminDashboard() {
     refetchInterval: 5000,
   });
 
-  const schoolName = settings?.schoolName || "Treasure-Home School";
+  const schoolName = settings?.schoolName || DEFAULT_BRANDING.schoolName;
 
   const { data: stats, isLoading } = useQuery<DashboardStats>({
     queryKey: ["/api/superadmin/stats"],

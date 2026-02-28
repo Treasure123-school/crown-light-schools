@@ -1,4 +1,5 @@
 import PublicLayout from '@/components/layout/PublicLayout';
+import { DEFAULT_BRANDING } from '@/config/branding';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -13,20 +14,20 @@ import { z } from 'zod';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { apiRequest } from '@/lib/queryClient';
 import { useToast } from '@/hooks/use-toast';
-import { 
-  FileText, 
-  Search, 
-  UserCheck, 
-  CheckCircle, 
-  ClipboardList, 
-  Check, 
-  Phone, 
-  Mail, 
-  MapPin, 
-  GraduationCap, 
-  Calendar, 
-  User, 
-  Home, 
+import {
+  FileText,
+  Search,
+  UserCheck,
+  CheckCircle,
+  ClipboardList,
+  Check,
+  Phone,
+  Mail,
+  MapPin,
+  GraduationCap,
+  Calendar,
+  User,
+  Home,
   ArrowRight,
   Info
 } from 'lucide-react';
@@ -57,16 +58,16 @@ type AdmissionForm = z.infer<typeof admissionSchema>;
 
 export default function Admissions() {
   const { toast } = useToast();
-  
+
   const { data: settings } = useQuery<SettingsData>({
     queryKey: ["/api/public/settings"],
     refetchInterval: 5000,
   });
 
-  const schoolName = settings?.schoolName || "Treasure-Home School";
-  const schoolEmail = settings?.schoolEmail || "admissions@treasurehomeschool.com";
-  const schoolPhone = settings?.schoolPhone || "08037906249, 08107921359";
-  const schoolAddress = settings?.schoolAddress || "Seriki-Soyinka Ifo, Ogun State";
+  const schoolName = settings?.schoolName || DEFAULT_BRANDING.schoolName;
+  const schoolEmail = settings?.schoolEmail || "admissions@school.com";
+  const schoolPhone = settings?.schoolPhone || "";
+  const schoolAddress = settings?.schoolAddress || DEFAULT_BRANDING.schoolAddress;
 
   const form = useForm<AdmissionForm>({
     resolver: zodResolver(admissionSchema),
@@ -226,7 +227,7 @@ export default function Admissions() {
                       </li>
                     ))}
                   </ul>
-                  
+
                   <div className="mt-6 rounded-lg bg-secondary/10 p-4">
                     <div className="mb-2 flex items-center gap-2">
                       <Info className="h-4 w-4 text-secondary" />
@@ -438,9 +439,9 @@ export default function Admissions() {
                         </div>
                       </div>
 
-                      <Button 
-                        type="submit" 
-                        className="w-full" 
+                      <Button
+                        type="submit"
+                        className="w-full"
                         disabled={admissionMutation.isPending}
                         data-testid="button-submit-application"
                       >
@@ -464,7 +465,7 @@ export default function Admissions() {
           <p className="mb-8 text-lg text-muted-foreground" data-testid="text-contact-description">
             Our admissions team is here to assist you throughout the process
           </p>
-          
+
           <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
             <div className="text-center" data-testid="contact-phone">
               <div className="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-lg bg-primary/10 text-primary">
@@ -473,7 +474,7 @@ export default function Admissions() {
               <h3 className="mb-1 font-semibold">Call Us</h3>
               <p className="text-sm text-muted-foreground">{schoolPhone}</p>
             </div>
-            
+
             <div className="text-center" data-testid="contact-email">
               <div className="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-lg bg-secondary/10 text-secondary">
                 <Mail className="h-6 w-6" />
@@ -481,7 +482,7 @@ export default function Admissions() {
               <h3 className="mb-1 font-semibold">Email Us</h3>
               <p className="text-sm text-muted-foreground">{schoolEmail}</p>
             </div>
-            
+
             <div className="text-center" data-testid="contact-visit">
               <div className="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-lg bg-primary/10 text-primary">
                 <MapPin className="h-6 w-6" />

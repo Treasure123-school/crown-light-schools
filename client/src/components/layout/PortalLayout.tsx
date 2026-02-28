@@ -1,3 +1,4 @@
+﻿import { DEFAULT_BRANDING } from '@/config/branding';
 import { useLocation } from 'wouter';
 import { 
   GraduationCap, Home, Users, Calendar, BookOpen, MessageSquare, User, Settings, 
@@ -310,7 +311,7 @@ export default function PortalLayout({ children, userRole, userName, userInitial
     refetchInterval: 10000,
   });
 
-  const schoolName = settings?.schoolName || "Treasure-Home School";
+  const schoolName = settings?.schoolName || DEFAULT_BRANDING.schoolName;
   const schoolMotto = settings?.schoolMotto || "Qualitative Education & Moral Excellence";
   const displayLogo = settings?.schoolLogo || schoolLogo;
 

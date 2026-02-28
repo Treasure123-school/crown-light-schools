@@ -1,4 +1,4 @@
-
+﻿
 import React from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -74,7 +74,7 @@ export function ProfessionalReportCard({
               <span className="text-blue-900 font-bold text-xl">🦉</span>
             </div>
             <div>
-              <h1 className="text-xl font-bold">TREASURE HOME SCHOOL</h1>
+              <h1 className="text-xl font-bold">YOUR SCHOOL NAME</h1>
               <p className="text-blue-100">Excellence in Education</p>
             </div>
           </div>

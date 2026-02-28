@@ -1,3 +1,4 @@
+﻿import { DEFAULT_BRANDING } from '@/config/branding';
 import { useState, useRef, useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -210,9 +211,9 @@ export function ProfessionalReportCard({
     queryKey: ["/api/superadmin/settings"],
   });
 
-  const schoolName = settings?.schoolName || "TREASURE HOME SCHOOL";
-  const schoolAddress = settings?.schoolAddress || "Seriki-Soyinka, Ifo, Ogun State, Nigeria";
-  const schoolEmail = settings?.schoolEmail || "info@treasurehomeschool.com";
+  const schoolName = settings?.schoolName || DEFAULT_BRANDING.schoolNameUpper;
+  const schoolAddress = settings?.schoolAddress || DEFAULT_BRANDING.schoolAddress;
+  const schoolEmail = settings?.schoolEmail || "info@school.com";
   const schoolPhone = settings?.schoolPhone || "080-1734-5676";
   const schoolMotto = settings?.schoolMotto || "Honesty and Success";
 
@@ -1061,8 +1062,8 @@ export function ProfessionalReportCard({
 
       {/* School Footer for Print */}
       <div className="hidden print:block mt-6 pt-4 border-t-2 text-center text-sm text-muted-foreground">
-        <p className="font-semibold">TREASURE HOME SCHOOL</p>
-        <p>Seriki-Soyinka, Ifo, Ogun State, Nigeria</p>
+        <p className="font-semibold">YOUR SCHOOL NAME</p>
+        <p>123 School Street, City, State</p>
         <p className="italic mt-1">This is a computer-generated report card.</p>
       </div>
     </div>

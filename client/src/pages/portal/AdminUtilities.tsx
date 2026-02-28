@@ -1,4 +1,4 @@
-
+﻿
 import { useState } from "react";
 import { useAuth } from "@/lib/auth";
 import { useMutation } from "@tanstack/react-query";
@@ -58,7 +58,7 @@ export default function AdminUtilities() {
               <ul className="list-disc list-inside mt-2">
                 <li>admin@demo.com</li>
                 <li>teacher@demo.com</li>
-                <li>admin@treasure.com</li>
+                <li>admin@demo.com</li>
               </ul>
             </CardDescription>
           </CardHeader>

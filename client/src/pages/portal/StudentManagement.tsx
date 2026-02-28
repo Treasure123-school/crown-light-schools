@@ -1,4 +1,4 @@
-import { useState } from 'react';
+﻿import { useState } from 'react';
 import { useQuery, useMutation } from '@tanstack/react-query';
 import { apiRequest, queryClient } from '@/lib/queryClient';
 import { optimisticUpdateItem, optimisticDelete, rollbackOnError } from '@/lib/optimisticUpdates';
@@ -1017,7 +1017,7 @@ export default function StudentManagement() {
                           </head>
                           <body>
                             <div class="header">
-                              <h1>Treasure-Home School Portal</h1>
+                              <h1>School Management Portal</h1>
                               <p>Login Credentials</p>
                             </div>
 

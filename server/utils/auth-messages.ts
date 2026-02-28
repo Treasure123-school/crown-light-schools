@@ -1,4 +1,4 @@
-export const AUTH_STATUS_TYPES = {
+﻿export const AUTH_STATUS_TYPES = {
   SUSPENDED_STAFF: "suspended_staff",
   SUSPENDED_PARENT: "suspended_parent", 
   SUSPENDED_STUDENT: "suspended_student",
@@ -25,7 +25,7 @@ export function getSuspensionMessage(roleName: string | undefined): SuspensionRe
   if (role === "parent") {
     return {
       message: "Account Suspended - Security Alert",
-      description: "Your parent account has been automatically suspended due to multiple failed login attempts. This security measure protects your child's information from unauthorized access.\n\n📞 To Restore Your Account:\nContact School Administrator:\n📧 Email: treasurehomeschool@gmail.com\n📞 Call: School office during working hours\n\n💡 Have your child's information ready for verification.",
+      description: "Your parent account has been automatically suspended due to multiple failed login attempts. This security measure protects your child's information from unauthorized access.\n\n📞 To Restore Your Account:\nContact School Administrator:\n📧 Email: admin@school.com\n📞 Call: School office during working hours\n\n💡 Have your child's information ready for verification.",
       statusType: AUTH_STATUS_TYPES.SUSPENDED_PARENT,
     };
   }

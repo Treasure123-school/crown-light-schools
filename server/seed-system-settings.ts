@@ -1,4 +1,4 @@
-import { db } from "./storage";
+﻿import { db } from "./storage";
 import { systemSettings } from "../shared/schema.pg";
 
 export async function seedSystemSettings() {
@@ -9,9 +9,9 @@ export async function seedSystemSettings() {
     if (existingSettings.length === 0) {
       // Create default system settings
       await db.insert(systemSettings).values({
-        schoolName: "Treasure-Home School",
+        schoolName: "Your School Name",
         schoolMotto: "Honesty and Success",
-        schoolEmails: JSON.stringify(["info@treasurehomeschool.edu.ng"]),
+        schoolEmails: JSON.stringify(["info@school.com"]),
         schoolPhones: JSON.stringify(["+234-XXX-XXX-XXXX"]),
         schoolAddress: "Lagos, Nigeria",
         maintenanceMode: false,

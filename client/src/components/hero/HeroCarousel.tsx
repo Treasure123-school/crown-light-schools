@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useMemo } from 'react';
+﻿import { useState, useEffect, useRef, useMemo } from 'react';
 import type { HomePageContent } from '@shared/schema';
 
 interface HeroCarouselProps {
@@ -22,7 +22,7 @@ const HeroSkeleton = () => (
     <div className="absolute inset-0 flex flex-col items-center justify-center p-8 text-center space-y-6">
       <div className="space-y-3">
         <h3 className="text-3xl lg:text-4xl font-bold text-white animate-pulse">
-          Treasure-Home School
+          Your School Name
         </h3>
         <p className="text-xl lg:text-2xl text-yellow-300 font-semibold animate-pulse" style={{ animationDelay: '0.2s' }}>
           Qualitative Education
@@ -157,7 +157,7 @@ export function HeroCarousel({
           {currentImage?.imageUrl && (
             <img
               src={currentImage.imageUrl}
-              alt={currentImage.altText || 'Treasure-Home School hero image'}
+              alt={currentImage.altText || 'School hero image'}
               className="absolute inset-0 w-full h-full object-cover"
               loading="eager"
               decoding="async"
@@ -168,7 +168,7 @@ export function HeroCarousel({
           {nextImage?.imageUrl && (
             <img
               src={nextImage.imageUrl}
-              alt={nextImage.altText || 'Treasure-Home School hero image'}
+              alt={nextImage.altText || 'School hero image'}
               className={`
                 absolute inset-0 w-full h-full object-cover
                 transition-opacity duration-1000 ease-in-out

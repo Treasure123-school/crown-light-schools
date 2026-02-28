@@ -1,4 +1,4 @@
-import { StatsCard } from '@/components/ui/stats-card';
+﻿import { StatsCard } from '@/components/ui/stats-card';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -73,7 +73,7 @@ export default function AdminDashboard() {
           </div>
           <div>
             <h2 className="text-2xl font-bold">Welcome back, {user.lastName}!</h2>
-            <p className="text-red-100 text-sm">Treasure-Home School Administration Portal</p>
+            <p className="text-red-100 text-sm">School Administration Portal</p>
           </div>
         </div>
       </div>

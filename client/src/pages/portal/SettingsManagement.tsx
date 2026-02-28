@@ -1,3 +1,4 @@
+﻿import { DEFAULT_BRANDING } from '@/config/branding';
 import { useState, useEffect } from 'react';
 import { useQuery, useMutation } from '@tanstack/react-query';
 import { apiRequest, queryClient } from '@/lib/queryClient';
@@ -600,11 +601,11 @@ export default function SettingsManagement() {
   const schoolForm = useForm<SchoolSettings>({
     resolver: zodResolver(schoolSettingsSchema),
     defaultValues: {
-      schoolName: 'Treasure-Home School',
+      schoolName: DEFAULT_BRANDING.schoolName,
       schoolAddress: '123 Education Street, Learning City, ED 12345',
       phoneNumber: '+1 (555) 123-4567',
-      email: 'info@treasurehome.edu',
-      website: 'https://treasurehome.edu',
+      email: 'info@school.com',
+      website: 'https://school.com',
       academicYear: '2024-2025',
     },
   });

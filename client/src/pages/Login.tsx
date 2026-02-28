@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
+import { DEFAULT_BRANDING } from '@/config/branding';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -58,7 +59,7 @@ function getRateLimitData(): RateLimitData {
     if (data) {
       return JSON.parse(data);
     }
-  } catch {}
+  } catch { }
   return { attempts: 0, lockedUntil: null };
 }
 
@@ -80,7 +81,7 @@ export default function Login() {
     refetchInterval: 5000,
   });
 
-  const schoolName = settings?.schoolName || "Treasure-Home School";
+  const schoolName = settings?.schoolName || DEFAULT_BRANDING.schoolName;
   const schoolMotto = settings?.schoolMotto || "Honesty and Success";
   const displayLogo = settings?.schoolLogo || "";
 
@@ -173,7 +174,7 @@ export default function Login() {
   const handleFailedAttempt = () => {
     const currentData = getRateLimitData();
     const newAttempts = currentData.attempts + 1;
-    
+
     if (newAttempts >= RATE_LIMIT_ATTEMPTS) {
       const lockData: RateLimitData = {
         attempts: newAttempts,
@@ -196,11 +197,11 @@ export default function Login() {
     if (statusType === 'suspended_staff' || statusType === 'suspended_parent' || statusType === 'suspended_student') {
       return 'Your account has been suspended. Please contact the school administrator.';
     }
-    if (statusType === 'invalid_credentials' || !message || 
-        message.toLowerCase().includes('invalid') || 
-        message.toLowerCase().includes('incorrect') ||
-        message.toLowerCase().includes('password') ||
-        message.toLowerCase().includes('user')) {
+    if (statusType === 'invalid_credentials' || !message ||
+      message.toLowerCase().includes('invalid') ||
+      message.toLowerCase().includes('incorrect') ||
+      message.toLowerCase().includes('password') ||
+      message.toLowerCase().includes('user')) {
       return 'Incorrect username or password.';
     }
     return 'An error occurred. Please try again.';
@@ -214,9 +215,9 @@ export default function Login() {
 
       clearError();
       setAuthPhase('authenticating');
-      
+
       await new Promise(resolve => setTimeout(resolve, 800));
-      
+
       const response = await apiRequest('POST', '/api/auth/login', data);
       const result = await response.json();
 
@@ -225,7 +226,7 @@ export default function Login() {
         const normalizedMessage = normalizeErrorMessage(result.message, result.statusType);
         throw new Error(normalizedMessage);
       }
-      
+
       clearRateLimitData();
       setRateLimitInfo({ attempts: 0, lockedUntil: null });
       return result;
@@ -233,7 +234,7 @@ export default function Login() {
     onSuccess: (data) => {
       clearError();
       setAuthPhase('success');
-      
+
       if (data.mustChangePassword || data.user.mustChangePassword) {
         setAuthPhase('idle');
         setTempUserData(data);
@@ -243,7 +244,7 @@ export default function Login() {
 
       login(data.user, data.token);
       const targetPath = getPortalByRoleId(data.user.roleId);
-      
+
       setTimeout(() => {
         navigate(`${targetPath}?login_success=true`);
       }, 600);
@@ -265,7 +266,7 @@ export default function Login() {
           newPassword: data.newPassword,
         });
         const result = await response.json();
-        
+
         if (!response.ok) {
           if (previousToken) {
             localStorage.setItem('token', previousToken);
@@ -274,7 +275,7 @@ export default function Login() {
           }
           throw new Error(result.message || 'Failed to change password');
         }
-        
+
         return result;
       } catch (error: any) {
         if (previousToken) {
@@ -327,19 +328,18 @@ export default function Login() {
 
       <div className="flex-1 flex items-center justify-center p-4 sm:p-6 lg:p-8 relative z-10">
         <div className="w-full max-w-md">
-          <Card 
-            className={`shadow-[0_20px_50px_rgba(8,_112,_184,_0.1)] border border-slate-200/60 dark:border-slate-800/60 bg-white dark:bg-slate-900 overflow-hidden transition-all duration-700 ease-out ${
-              isCardVisible 
-                ? 'opacity-100 translate-y-0 scale-100' 
+          <Card
+            className={`shadow-[0_20px_50px_rgba(8,_112,_184,_0.1)] border border-slate-200/60 dark:border-slate-800/60 bg-white dark:bg-slate-900 overflow-hidden transition-all duration-700 ease-out ${isCardVisible
+                ? 'opacity-100 translate-y-0 scale-100'
                 : 'opacity-0 translate-y-8 scale-95'
-            }`}
+              }`}
             data-testid="card-login"
           >
             <div className="bg-transparent px-6 py-6 text-center flex flex-col items-center justify-center">
               <Link href="/" className="inline-block mb-4 transition-transform hover:scale-105" data-testid="link-home">
                 <img
                   src={displayLogo}
-                  alt="Treasure-Home School Logo"
+                  alt={DEFAULT_BRANDING.logoAlt}
                   className="h-20 w-auto max-w-[180px] object-contain drop-shadow-md"
                   data-testid="img-school-logo"
                 />
@@ -385,7 +385,7 @@ export default function Login() {
                   </div>
 
                   {isLockedOut && (
-                    <div 
+                    <div
                       className="mb-6 p-4 rounded-lg border bg-red-50 dark:bg-red-950/30 border-red-200 dark:border-red-800"
                       data-testid="error-rate-limit"
                     >
@@ -405,7 +405,7 @@ export default function Login() {
                   )}
 
                   {loginError && !isLockedOut && (
-                    <div 
+                    <div
                       className="mb-6 p-4 rounded-lg border bg-red-50 dark:bg-red-950/30 border-red-200 dark:border-red-800 animate-in fade-in slide-in-from-top-2 duration-300"
                       data-testid="error-login-message"
                     >
@@ -428,8 +428,8 @@ export default function Login() {
                     </div>
                   )}
 
-                  <form 
-                    onSubmit={handleSubmit(onSubmit)} 
+                  <form
+                    onSubmit={handleSubmit(onSubmit)}
                     className="space-y-5"
                     autoComplete={rememberMe ? "on" : "off"}
                   >
@@ -442,13 +442,12 @@ export default function Login() {
                         id="identifier"
                         type="text"
                         {...register('identifier')}
-                        className={`h-12 text-base transition-all duration-200 ${
-                          errors.identifier 
-                            ? 'border-red-500 focus-visible:ring-red-500' 
+                        className={`h-12 text-base transition-all duration-200 ${errors.identifier
+                            ? 'border-red-500 focus-visible:ring-red-500'
                             : watchedFields.identifier && !errors.identifier
-                            ? 'border-green-500 focus-visible:ring-green-500'
-                            : ''
-                        }`}
+                              ? 'border-green-500 focus-visible:ring-green-500'
+                              : ''
+                          }`}
                         placeholder="Enter your username or email"
                         autoComplete={rememberMe ? "username" : "off"}
                         disabled={isLockedOut}
@@ -476,13 +475,12 @@ export default function Login() {
                           id="password"
                           type={showPassword ? "text" : "password"}
                           {...register('password')}
-                          className={`h-12 text-base pr-12 transition-all duration-200 ${
-                            errors.password 
-                              ? 'border-red-500 focus-visible:ring-red-500' 
+                          className={`h-12 text-base pr-12 transition-all duration-200 ${errors.password
+                              ? 'border-red-500 focus-visible:ring-red-500'
                               : watchedFields.password && watchedFields.password.length >= 6
-                              ? 'border-green-500 focus-visible:ring-green-500'
-                              : ''
-                          }`}
+                                ? 'border-green-500 focus-visible:ring-green-500'
+                                : ''
+                            }`}
                           placeholder="Enter your password"
                           autoComplete={rememberMe ? "current-password" : "off"}
                           disabled={isLockedOut}
@@ -539,11 +537,10 @@ export default function Login() {
 
                     <Button
                       type="submit"
-                      className={`w-full h-12 text-base font-semibold transition-all duration-300 shadow-sm ${
-                        isButtonDisabled 
-                          ? 'bg-blue-400 cursor-not-allowed' 
+                      className={`w-full h-12 text-base font-semibold transition-all duration-300 shadow-sm ${isButtonDisabled
+                          ? 'bg-blue-400 cursor-not-allowed'
                           : 'bg-blue-600 hover:bg-blue-700 hover:shadow-md active:scale-[0.98]'
-                      }`}
+                        }`}
                       disabled={isButtonDisabled}
                       data-testid="button-login"
                     >
