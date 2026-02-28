@@ -99,11 +99,7 @@ export default function PublicLayout({ children }: PublicLayoutProps) {
         <div className="container max-w-7xl mx-auto px-4 flex items-center justify-between gap-4">
           <div className="flex items-center gap-4">
             <Link href="/" className="flex items-center gap-4" onClick={() => setIsMobileMenuOpen(false)}>
-              <img
-                src="/images/hardcoded-school-logo.png"
-                alt="Crown Light School"
-                className="h-20 w-auto object-contain"
-              />
+              <span className="font-bold text-xl">{schoolName}</span>
             </Link>
           </div>
 
@@ -162,11 +158,7 @@ export default function PublicLayout({ children }: PublicLayoutProps) {
         <div className="container max-w-7xl mx-auto px-4">
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-16 mb-12">
             <div className="space-y-6">
-              <img
-                src="/images/hardcoded-school-logo.png"
-                alt="Crown Light School"
-                className="h-20 w-auto brightness-0 invert object-contain"
-              />
+              <span className="font-bold text-xl text-white block">{schoolName}</span>
               <p className="text-[13px] text-white font-bold leading-relaxed">Located at {schoolAddress}, we have a rich history of educational excellence.</p>
             </div>
             <div className="space-y-6">
