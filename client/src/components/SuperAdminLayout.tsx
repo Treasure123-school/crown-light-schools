@@ -63,7 +63,7 @@ export default function SuperAdminLayout({ children }: SuperAdminLayoutProps) {
   });
 
   const schoolName = settings?.schoolName || DEFAULT_BRANDING.schoolName;
-  const schoolMotto = settings?.schoolMotto || "Qualitative Education & Moral Excellence";
+  const schoolMotto = settings?.schoolMotto || "";
   const schoolLogoUrl = settings?.schoolLogo || schoolLogo;
 
   useEffect(() => {

@@ -215,7 +215,7 @@ export function ProfessionalReportCard({
   const schoolAddress = settings?.schoolAddress || DEFAULT_BRANDING.schoolAddress;
   const schoolEmail = settings?.schoolEmail || "info@school.com";
   const schoolPhone = settings?.schoolPhone || "080-1734-5676";
-  const schoolMotto = settings?.schoolMotto || "Honesty and Success";
+  const schoolMotto = settings?.schoolMotto || "";
 
   const [isSubjectsOpen, setIsSubjectsOpen] = useState(true);
   const [isAffectiveOpen, setIsAffectiveOpen] = useState(true);

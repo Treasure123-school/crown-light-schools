@@ -1,4 +1,4 @@
-import { useState } from 'react';
+﻿import { useState } from 'react';
 import { DEFAULT_BRANDING } from '@/config/branding';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -33,7 +33,7 @@ export default function ForgotPassword() {
   });
 
   const schoolName = settings?.schoolName || DEFAULT_BRANDING.schoolName;
-  const schoolMotto = settings?.schoolMotto || "Honesty and Success";
+  const schoolMotto = settings?.schoolMotto || "";
 
   const {
     register,

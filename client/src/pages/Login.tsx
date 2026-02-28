@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react';
+﻿import { useState, useRef, useEffect } from 'react';
 import { DEFAULT_BRANDING } from '@/config/branding';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -82,7 +82,7 @@ export default function Login() {
   });
 
   const schoolName = settings?.schoolName || DEFAULT_BRANDING.schoolName;
-  const schoolMotto = settings?.schoolMotto || "Honesty and Success";
+  const schoolMotto = settings?.schoolMotto || "";
   const displayLogo = settings?.schoolLogo || "";
 
   const [showPasswordChange, setShowPasswordChange] = useState(false);

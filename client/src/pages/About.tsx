@@ -1,4 +1,4 @@
-import PublicLayout from '@/components/layout/PublicLayout';
+﻿import PublicLayout from '@/components/layout/PublicLayout';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Link } from 'wouter';
@@ -35,7 +35,7 @@ export default function About() {
   });
 
   const schoolName = settings?.schoolName || DEFAULT_BRANDING.schoolName;
-  const schoolMotto = settings?.schoolMotto || "Honesty and Success";
+  const schoolMotto = settings?.schoolMotto || "";
   const schoolAddress = settings?.schoolAddress || DEFAULT_BRANDING.schoolAddress;
 
   const values = [

@@ -312,7 +312,7 @@ export default function PortalLayout({ children, userRole, userName, userInitial
   });
 
   const schoolName = settings?.schoolName || DEFAULT_BRANDING.schoolName;
-  const schoolMotto = settings?.schoolMotto || "Qualitative Education & Moral Excellence";
+  const schoolMotto = settings?.schoolMotto || "";
   const displayLogo = settings?.schoolLogo || schoolLogo;
 
   useEffect(() => {

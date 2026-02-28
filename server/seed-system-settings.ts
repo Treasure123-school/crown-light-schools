@@ -10,7 +10,7 @@ export async function seedSystemSettings() {
       // Create default system settings
       await db.insert(systemSettings).values({
         schoolName: "Your School Name",
-        schoolMotto: "Honesty and Success",
+        schoolMotto: "",
         schoolEmails: JSON.stringify(["info@school.com"]),
         schoolPhones: JSON.stringify(["+234-XXX-XXX-XXXX"]),
         schoolAddress: "Lagos, Nigeria",

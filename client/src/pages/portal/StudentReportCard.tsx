@@ -134,7 +134,7 @@ export default function StudentReportCard() {
   const schoolAddress = settings?.schoolAddress || DEFAULT_BRANDING.schoolAddress;
   const schoolEmail = settings?.schoolEmail || "info@school.com";
   const schoolPhone = settings?.schoolPhone || "080-1734-5676";
-  const schoolMotto = settings?.schoolMotto || "Honesty and Success";
+  const schoolMotto = settings?.schoolMotto || "";
 
   const { data: terms = [] } = useQuery({
     queryKey: ['/api/terms'],

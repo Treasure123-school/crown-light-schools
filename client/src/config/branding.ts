@@ -18,7 +18,7 @@ export const DEFAULT_BRANDING = {
     // School identity
     schoolName: "Your School Name",
     schoolNameUpper: "YOUR SCHOOL NAME",
-    schoolMotto: "Excellence in Education",
+    schoolMotto: "",
 
     // Location
     schoolAddress: "123 School Street, City, State",

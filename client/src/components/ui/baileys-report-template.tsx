@@ -158,7 +158,7 @@ export const BaileysReportTemplate = forwardRef<HTMLDivElement, BaileysReportTem
   schoolAddress = DEFAULT_BRANDING.schoolAddress,
   schoolPhone = "08012345678",
   schoolEmail = "info@school.com",
-  schoolMotto = "Honesty and Success",
+  schoolMotto = "",
   schoolLogo: customLogo
 }, ref) => {
   const subjects = reportCard.items || reportCard.subjects || [];
@@ -168,7 +168,7 @@ export const BaileysReportTemplate = forwardRef<HTMLDivElement, BaileysReportTem
   const avgPercentage = reportCard.averagePercentage || (totalMax > 0 ? Math.round((totalObtained / totalMax) * 100 * 10) / 10 : 0);
   const overallGrade = reportCard.overallGrade || getGradeFromScore(avgPercentage);
   const gradeCounts = countGrades(subjects);
-  
+
   const attendance = reportCard.attendance || {
     timesSchoolOpened: 0,
     timesPresent: 0,
@@ -227,10 +227,10 @@ export const BaileysReportTemplate = forwardRef<HTMLDivElement, BaileysReportTem
   };
 
   return (
-    <div 
+    <div
       ref={ref}
-      style={{ 
-        width: '210mm', 
+      style={{
+        width: '210mm',
         minHeight: '297mm',
         maxWidth: '210mm',
         margin: '0 auto',
@@ -248,9 +248,9 @@ export const BaileysReportTemplate = forwardRef<HTMLDivElement, BaileysReportTem
       {/* School Header */}
       <div style={{ textAlign: 'center', borderBottom: '2px solid #1f2937', paddingBottom: '8px', marginBottom: '6px' }}>
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '12px' }}>
-          <img 
-            src={displayLogo} 
-            alt="School Logo" 
+          <img
+            src={displayLogo}
+            alt="School Logo"
             style={{ height: '50px', width: '50px', objectFit: 'contain' }}
             crossOrigin="anonymous"
           />
@@ -410,8 +410,8 @@ export const BaileysReportTemplate = forwardRef<HTMLDivElement, BaileysReportTem
           {/* Student Photo Placeholder */}
           <div style={{ border: '1px solid #1f2937', height: '70px', marginBottom: '6px', display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: '#f9fafb' }}>
             {reportCard.studentPhoto ? (
-              <img 
-                src={reportCard.studentPhoto} 
+              <img
+                src={reportCard.studentPhoto}
                 alt={reportCard.studentName}
                 style={{ height: '100%', width: '100%', objectFit: 'cover' }}
                 crossOrigin="anonymous"
