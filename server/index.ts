@@ -425,9 +425,11 @@ function sanitizeLogData(data: any): any {
     // This is critical for Replit/Vercel single-server deployments
     serveStatic(app);
   }
-  
+
   // No catch-all for separate frontend deployments
+  // Health check endpoints - /api/health is used by Render's healthCheckPath
   app.get("/health", (req, res) => res.json({ status: "ok" }));
+  app.get("/api/health", (req, res) => res.json({ status: "ok" }));
 
   // ALWAYS serve the app on the port specified in the environment variable PORT
   // Other ports are firewalled. Default to 5000 if not specified.
