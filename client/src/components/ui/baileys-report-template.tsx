@@ -1,6 +1,6 @@
 ﻿import { DEFAULT_BRANDING } from '@/config/branding';
 import { forwardRef } from 'react';
-import logoPath from '@assets/school-logo.png';
+const logoPath = '/images/hardcoded-school-logo.png';
 
 interface SubjectScore {
   subjectName: string;

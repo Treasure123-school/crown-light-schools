@@ -16,7 +16,6 @@ import { useToast } from '@/hooks/use-toast';
 import { useAuth } from '@/lib/auth';
 import { Link, useLocation } from 'wouter';
 import { getRoleNameById, getPortalByRoleId } from '@/lib/roles';
-import schoolLogo from '@assets/school-logo.png';
 
 interface SettingsData {
   schoolName: string;
@@ -330,8 +329,8 @@ export default function Login() {
         <div className="w-full max-w-md">
           <Card
             className={`shadow-[0_20px_50px_rgba(8,_112,_184,_0.1)] border border-slate-200/60 dark:border-slate-800/60 bg-white dark:bg-slate-900 overflow-hidden transition-all duration-700 ease-out ${isCardVisible
-                ? 'opacity-100 translate-y-0 scale-100'
-                : 'opacity-0 translate-y-8 scale-95'
+              ? 'opacity-100 translate-y-0 scale-100'
+              : 'opacity-0 translate-y-8 scale-95'
               }`}
             data-testid="card-login"
           >
@@ -443,10 +442,10 @@ export default function Login() {
                         type="text"
                         {...register('identifier')}
                         className={`h-12 text-base transition-all duration-200 ${errors.identifier
-                            ? 'border-red-500 focus-visible:ring-red-500'
-                            : watchedFields.identifier && !errors.identifier
-                              ? 'border-green-500 focus-visible:ring-green-500'
-                              : ''
+                          ? 'border-red-500 focus-visible:ring-red-500'
+                          : watchedFields.identifier && !errors.identifier
+                            ? 'border-green-500 focus-visible:ring-green-500'
+                            : ''
                           }`}
                         placeholder="Enter your username or email"
                         autoComplete={rememberMe ? "username" : "off"}
@@ -476,10 +475,10 @@ export default function Login() {
                           type={showPassword ? "text" : "password"}
                           {...register('password')}
                           className={`h-12 text-base pr-12 transition-all duration-200 ${errors.password
-                              ? 'border-red-500 focus-visible:ring-red-500'
-                              : watchedFields.password && watchedFields.password.length >= 6
-                                ? 'border-green-500 focus-visible:ring-green-500'
-                                : ''
+                            ? 'border-red-500 focus-visible:ring-red-500'
+                            : watchedFields.password && watchedFields.password.length >= 6
+                              ? 'border-green-500 focus-visible:ring-green-500'
+                              : ''
                             }`}
                           placeholder="Enter your password"
                           autoComplete={rememberMe ? "current-password" : "off"}
@@ -538,8 +537,8 @@ export default function Login() {
                     <Button
                       type="submit"
                       className={`w-full h-12 text-base font-semibold transition-all duration-300 shadow-sm ${isButtonDisabled
-                          ? 'bg-blue-400 cursor-not-allowed'
-                          : 'bg-blue-600 hover:bg-blue-700 hover:shadow-md active:scale-[0.98]'
+                        ? 'bg-blue-400 cursor-not-allowed'
+                        : 'bg-blue-600 hover:bg-blue-700 hover:shadow-md active:scale-[0.98]'
                         }`}
                       disabled={isButtonDisabled}
                       data-testid="button-login"
