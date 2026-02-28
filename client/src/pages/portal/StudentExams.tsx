@@ -14,7 +14,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Progress } from '@/components/ui/progress';
 import { Clock, BookOpen, Trophy, Play, Eye, CheckCircle, XCircle, Timer, Save, RotateCcw, AlertCircle, Loader, FileText, Circle, CheckCircle2, HelpCircle, ClipboardCheck, GraduationCap, Award, Calendar } from 'lucide-react';
 import type { Exam, ExamSession, ExamQuestion, QuestionOption, StudentAnswer } from '@shared/schema';
-import schoolLogo from '@assets/1000025432-removebg-preview (1)_1757796555126.png';
+const schoolLogo = '/images/hardcoded-school-logo.png';
 import { useSocketIORealtime } from '@/hooks/useSocketIORealtime';
 import { ExamHeader } from '@/components/ExamHeader';
 
@@ -28,7 +28,7 @@ const VIOLATION_DETECTION_DELAY = 500; // ms delay to avoid false positives
 const DEVTOOLS_CHECK_INTERVAL = 1000; // Check for DevTools every second
 
 // Violation types for comprehensive tracking
-type ViolationType = 
+type ViolationType =
   | 'tab_switch'      // Tab switching/visibility change
   | 'browser_minimize' // Browser window minimized/backgrounded
   | 'devtools'        // DevTools/Inspect Element opened
@@ -79,14 +79,14 @@ export default function StudentExams() {
   const [violationPenalty, setViolationPenalty] = useState(0);
   const devToolsCheckRef = useRef<NodeJS.Timeout | null>(null);
   const isAutoSubmittingRef = useRef(false); // Prevent double auto-submit
-  
+
   // RELIABILITY: Use refs to ensure latest values are always accessible for auto-submit
   const violationCountRef = useRef(violationCount);
   const tabSwitchCountRef = useRef(tabSwitchCount);
   const violationPenaltyRef = useRef(violationPenalty);
   const timeRemainingRef = useRef(timeRemaining);
   const activeSessionRef = useRef(activeSession);
-  
+
   // Keep refs in sync with state
   useEffect(() => { violationCountRef.current = violationCount; }, [violationCount]);
   useEffect(() => { tabSwitchCountRef.current = tabSwitchCount; }, [tabSwitchCount]);
@@ -158,7 +158,7 @@ export default function StudentExams() {
   useEffect(() => {
     // Only check if we have an active session that's completed
     if (!activeSession?.id || !activeSession.isCompleted || isRedirecting) return;
-    
+
     // Check if there's a fresh result in sessionStorage (indicates just-submitted)
     const storedResult = sessionStorage.getItem('lastExamResult');
     if (storedResult) {
@@ -548,11 +548,11 @@ export default function StudentExams() {
   // Handles: tab switches, browser minimize, DevTools, refresh attempts, duplicate sessions
   const handleSecurityViolation = useCallback((type: ViolationType, details?: string) => {
     if (!activeSession || activeSession.isCompleted || isAutoSubmittingRef.current) return;
-    
+
     // Update violation count and history
     setViolationCount(prev => {
       const newCount = prev + 1;
-      
+
       // Record this violation
       const violationRecord: ViolationRecord = {
         type,
@@ -561,16 +561,16 @@ export default function StudentExams() {
       };
       setViolationHistory(history => [...history, violationRecord]);
       setLastViolationType(type);
-      
+
       // Update penalty
       const calculatedPenalty = calculateViolationPenalty(newCount);
       setViolationPenalty(calculatedPenalty);
-      
+
       // Also update tabSwitchCount for backward compatibility
       if (type === 'tab_switch' || type === 'browser_minimize') {
         setTabSwitchCount(tc => tc + 1);
       }
-      
+
       // Save violation to session metadata
       if (activeSession?.id) {
         apiRequest('PATCH', `/api/exam-sessions/${activeSession.id}/metadata`, {
@@ -580,9 +580,9 @@ export default function StudentExams() {
             lastViolationType: type,
             violationHistory: [...violationHistory, violationRecord].slice(-10) // Keep last 10
           })
-        }).catch(() => {});
+        }).catch(() => { });
       }
-      
+
       // Get violation type display name
       const violationNames: Record<ViolationType, string> = {
         'tab_switch': 'Tab Switch',
@@ -593,38 +593,38 @@ export default function StudentExams() {
         'screenshot': 'Screenshot Attempt',
         'copy_paste': 'Copy/Paste Attempt'
       };
-      
+
       // CHECK IF AUTO-SUBMIT REQUIRED (3rd violation)
       if (newCount >= MAX_VIOLATIONS_BEFORE_AUTO_SUBMIT) {
         isAutoSubmittingRef.current = true;
-        
+
         toast({
           title: "EXAM AUTO-SUBMITTED",
           description: `Your exam has been automatically submitted due to ${newCount} security violations. This is to maintain exam integrity.`,
           variant: "destructive",
         });
-        
+
         // Trigger auto-submit immediately
         setTimeout(() => {
           forceSubmitExam();
         }, 500);
-        
+
         return newCount;
       }
-      
+
       // Show warning for 1st and 2nd violations
       setShowViolationWarning(true);
       setShowTabSwitchWarning(true);
-      
+
       // Auto-hide warning after 5 seconds
       if (violationTimeoutRef.current) clearTimeout(violationTimeoutRef.current);
       violationTimeoutRef.current = setTimeout(() => {
         setShowViolationWarning(false);
         setShowTabSwitchWarning(false);
       }, 5000);
-      
+
       const warningsRemaining = MAX_WARNINGS_ALLOWED - newCount + 1;
-      
+
       if (newCount === 1) {
         toast({
           title: `WARNING 1 of ${MAX_WARNINGS_ALLOWED}: ${violationNames[type]}`,
@@ -638,7 +638,7 @@ export default function StudentExams() {
           variant: "destructive",
         });
       }
-      
+
       return newCount;
     });
   }, [activeSession, violationHistory, toast]);
@@ -719,42 +719,42 @@ export default function StudentExams() {
     const checkDevToolsByConsole = (): boolean => {
       const result = consoleDetected;
       consoleDetected = false; // Reset for next check
-      
+
       try {
         const element = new Image();
         Object.defineProperty(element, 'id', {
-          get: function() {
+          get: function () {
             consoleDetected = true;
             return 'devtools-detector';
           }
         });
-        
+
         // Using console.debug which is less intrusive than console.dir
         console.debug(element);
       } catch (e) {
         // Silently ignore if Object.defineProperty fails
       }
-      
+
       return result;
     };
 
     // Method 3: Performance timing check (non-blocking, measures toString/valueOf overhead)
     const checkDevToolsByTiming = (): boolean => {
       const start = performance.now();
-      
+
       // Create an object with a slow toString (only triggers when DevTools inspects it)
       const obj = {
-        toString: function() {
+        toString: function () {
           // This is called when DevTools tries to display the object
           return 'test';
         }
       };
-      
+
       // Trigger potential inspection
       console.debug('%c', obj);
-      
+
       const end = performance.now();
-      
+
       // If DevTools is open and inspecting, there's usually a slight delay
       // Keep threshold low to avoid false positives
       return (end - start) > 50;
@@ -763,10 +763,10 @@ export default function StudentExams() {
     const checkDevTools = () => {
       const sizeCheck = checkDevToolsBySize();
       const consoleCheck = checkDevToolsByConsole();
-      
+
       // Combine detection methods - size check is most reliable
       const detected = sizeCheck || consoleCheck;
-      
+
       if (detected) {
         consecutiveDetections++;
         if (consecutiveDetections >= DETECTION_THRESHOLD && !devToolsOpen) {
@@ -892,7 +892,7 @@ export default function StudentExams() {
     // Generate unique tab ID for this browser tab
     const tabId = `tab_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
     const sessionKey = `exam_session_${activeSession.id}`;
-    
+
     // === PART A: LocalStorage for same-browser tab detection ===
     const existingSession = localStorage.getItem(sessionKey);
     if (existingSession) {
@@ -906,7 +906,7 @@ export default function StudentExams() {
         localStorage.removeItem(sessionKey);
       }
     }
-    
+
     const registerLocalSession = () => {
       localStorage.setItem(sessionKey, JSON.stringify({
         tabId,
@@ -914,10 +914,10 @@ export default function StudentExams() {
         lastPing: Date.now()
       }));
     };
-    
+
     registerLocalSession();
     const localHeartbeatInterval = setInterval(registerLocalSession, 2000);
-    
+
     const handleStorageChange = (e: StorageEvent) => {
       if (e.key === sessionKey && e.newValue) {
         try {
@@ -925,19 +925,19 @@ export default function StudentExams() {
           if (newSession.tabId !== tabId && Date.now() - newSession.lastPing < 5000) {
             handleSecurityViolation('duplicate_session', 'Exam opened in another browser tab');
           }
-        } catch (e) {}
+        } catch (e) { }
       }
     };
-    
+
     window.addEventListener('storage', handleStorageChange);
-    
+
     // === PART B: Socket.IO for cross-browser/device detection ===
     // Get the socket from the global socket manager
     const token = localStorage.getItem('token');
     if (token && typeof window !== 'undefined') {
       // Create a connection to register this exam session with the server
       const socketUrl = window.location.origin;
-      
+
       // Use dynamic import to get socket.io-client
       import('socket.io-client').then(({ io }) => {
         const socket = io(socketUrl, {
@@ -946,7 +946,7 @@ export default function StudentExams() {
           transports: ['websocket', 'polling'],
           reconnection: true,
         });
-        
+
         // Register this exam session with the server
         socket.on('connect', () => {
           socket.emit('exam:register_session', {
@@ -954,21 +954,21 @@ export default function StudentExams() {
             examId: activeSession.examId
           });
         });
-        
+
         // Listen for duplicate session events from server
         socket.on('exam:duplicate_session', (data: { sessionId: number; message: string }) => {
           if (data.sessionId === activeSession.id) {
             handleSecurityViolation('duplicate_session', data.message || 'Exam opened on another device');
           }
         });
-        
+
         // Send heartbeats to keep session active on server
         const serverHeartbeatInterval = setInterval(() => {
           if (socket.connected) {
             socket.emit('exam:session_heartbeat', { sessionId: activeSession.id });
           }
         }, 5000);
-        
+
         // Store socket for cleanup
         (window as any).__examSecuritySocket = socket;
         (window as any).__examSecurityHeartbeat = serverHeartbeatInterval;
@@ -977,12 +977,12 @@ export default function StudentExams() {
         console.warn('Socket.IO not available for cross-device duplicate detection');
       });
     }
-    
+
     // Cleanup on unmount or session end
     return () => {
       clearInterval(localHeartbeatInterval);
       window.removeEventListener('storage', handleStorageChange);
-      
+
       // Cleanup localStorage
       const currentSession = localStorage.getItem(sessionKey);
       if (currentSession) {
@@ -995,7 +995,7 @@ export default function StudentExams() {
           localStorage.removeItem(sessionKey);
         }
       }
-      
+
       // Cleanup Socket.IO
       const socket = (window as any).__examSecuritySocket;
       const heartbeat = (window as any).__examSecurityHeartbeat;
@@ -1100,7 +1100,7 @@ export default function StudentExams() {
 
       if (!response.ok) {
         let errorMessage = 'Failed to start exam';
-        
+
         try {
           const contentType = response.headers.get('content-type');
           if (contentType && contentType.includes('application/json')) {
@@ -1212,7 +1212,7 @@ export default function StudentExams() {
                 errorMessage = errorData.message;
               } else if (errorData?.errors) {
                 // Handle Zod validation errors
-                errorMessage = Array.isArray(errorData.errors) 
+                errorMessage = Array.isArray(errorData.errors)
                   ? errorData.errors.map((e: any) => e.message).join(', ')
                   : 'Validation failed';
               }
@@ -1273,12 +1273,12 @@ export default function StudentExams() {
           lastError = networkError;
 
           // Check if it's a network/timeout error that should be retried
-          if ((networkError.name === 'TypeError' || 
-               networkError.name === 'AbortError' || 
-               networkError.message?.includes('fetch') ||
-               networkError.message?.includes('network') ||
-               networkError.message?.includes('timeout')) && 
-               attempt < maxRetries) {
+          if ((networkError.name === 'TypeError' ||
+            networkError.name === 'AbortError' ||
+            networkError.message?.includes('fetch') ||
+            networkError.message?.includes('network') ||
+            networkError.message?.includes('timeout')) &&
+            attempt < maxRetries) {
             continue; // Retry network errors
           }
           // Last attempt or non-retryable error
@@ -1314,8 +1314,8 @@ export default function StudentExams() {
       }, 2000);
 
       // Invalidate cache to ensure UI stays in sync
-      queryClient.invalidateQueries({ 
-        queryKey: ['/api/student-answers/session', activeSession?.id] 
+      queryClient.invalidateQueries({
+        queryKey: ['/api/student-answers/session', activeSession?.id]
       });
 
     },
@@ -1335,13 +1335,13 @@ export default function StudentExams() {
       let userFriendlyMessage = error.message;
 
       // Network/Connection errors - auto-retry silently
-      if (error.message.includes('fetch') || error.message.includes('Network') || 
-          error.message.includes('timeout') || error.message.includes('500')) {
+      if (error.message.includes('fetch') || error.message.includes('Network') ||
+        error.message.includes('timeout') || error.message.includes('500')) {
         shouldAutoRetry = true;
       }
       // Authentication errors - show to user
-      else if (error.message.includes('401') || error.message.includes('session') || 
-               error.message.includes('Authentication')) {
+      else if (error.message.includes('401') || error.message.includes('session') ||
+        error.message.includes('Authentication')) {
         shouldShowToast = true;
         userFriendlyMessage = "Session expired. Please refresh the page.";
       }
@@ -1352,7 +1352,7 @@ export default function StudentExams() {
       }
       // Validation errors - silent (user sees status indicator)
       else if (error.message.includes('Please select') || error.message.includes('Please enter') ||
-               error.message.includes('validation') || error.message.includes('Invalid')) {
+        error.message.includes('validation') || error.message.includes('Invalid')) {
       }
       // Unknown errors - show after multiple failures
       else {
@@ -1393,7 +1393,7 @@ export default function StudentExams() {
     const violations = isForceSubmit ? tabSwitchCountRef.current : tabSwitchCount;
     const penalty = isForceSubmit ? violationPenaltyRef.current : violationPenalty;
     const remaining = isForceSubmit ? timeRemainingRef.current : timeRemaining;
-    
+
     if (!session) throw new Error('No active session');
 
     const startTime = Date.now();
@@ -1426,19 +1426,19 @@ export default function StudentExams() {
 
         // Handle response
         const contentType = response.headers.get('content-type');
-        
+
         if (!response.ok) {
           let errorMessage = 'Failed to submit exam';
-          
+
           if (contentType?.includes('application/json')) {
             try {
               const errorData = await response.json();
               errorMessage = errorData.message || errorMessage;
-              
+
               // If already submitted, treat as success
               if (response.status === 409 || errorMessage.includes('already submitted')) {
-                return { 
-                  submitted: true, 
+                return {
+                  submitted: true,
                   alreadySubmitted: true,
                   message: 'Exam was previously submitted.',
                   result: errorData.result || null,
@@ -1451,14 +1451,14 @@ export default function StudentExams() {
           } else {
             errorMessage = `Server error (${response.status}). Please try again.`;
           }
-          
+
           // Don't retry on 4xx errors (client errors)
           if (response.status >= 400 && response.status < 500 && response.status !== 408) {
             throw new Error(errorMessage);
           }
-          
+
           lastError = new Error(errorMessage);
-          
+
           // Wait before retry with exponential backoff
           if (attempt < maxRetries) {
             const delay = Math.min(1000 * Math.pow(2, attempt - 1), 5000);
@@ -1474,7 +1474,7 @@ export default function StudentExams() {
         } catch (parseError) {
           throw new Error('Invalid response from server. Your exam may have been submitted - please refresh to check.');
         }
-        
+
         const totalTime = Date.now() - startTime;
 
         // Send performance metrics to server (fire and forget)
@@ -1489,31 +1489,31 @@ export default function StudentExams() {
             attempts: attempt,
             isForceSubmit
           }
-        }).catch(() => {});
+        }).catch(() => { });
 
         return { ...submissionData, clientPerformance: { totalTime, attempts: attempt }, isForceSubmit };
-        
+
       } catch (error: any) {
         lastError = error;
-        
+
         // Check if it's a network error that warrants retry
-        const isNetworkError = error.name === 'TypeError' || 
-                                error.name === 'AbortError' ||
-                                error.message?.includes('fetch') ||
-                                error.message?.includes('network') ||
-                                error.message?.includes('timeout');
-        
+        const isNetworkError = error.name === 'TypeError' ||
+          error.name === 'AbortError' ||
+          error.message?.includes('fetch') ||
+          error.message?.includes('network') ||
+          error.message?.includes('timeout');
+
         if (isNetworkError && attempt < maxRetries) {
           const delay = Math.min(1000 * Math.pow(2, attempt - 1), 5000);
           await new Promise(resolve => setTimeout(resolve, delay));
           continue;
         }
-        
+
         // Non-retryable error or max retries reached
         throw error;
       }
     }
-    
+
     // All retries exhausted
     throw lastError || new Error('Failed to submit exam after multiple attempts');
   };
@@ -1529,14 +1529,14 @@ export default function StudentExams() {
       setIsScoring(false);
 
       // Enhanced cache invalidation for all related data
-      queryClient.invalidateQueries({ 
-        queryKey: ['/api/student-answers/session', activeSession?.id] 
+      queryClient.invalidateQueries({
+        queryKey: ['/api/student-answers/session', activeSession?.id]
       });
-      queryClient.invalidateQueries({ 
-        queryKey: ['/api/exam-results', user?.id] 
+      queryClient.invalidateQueries({
+        queryKey: ['/api/exam-results', user?.id]
       });
-      queryClient.invalidateQueries({ 
-        queryKey: ['/api/exam-sessions', activeSession?.id] 
+      queryClient.invalidateQueries({
+        queryKey: ['/api/exam-sessions', activeSession?.id]
       });
       queryClient.invalidateQueries({ queryKey: ['/api/exam-sessions'] });
 
@@ -1544,10 +1544,10 @@ export default function StudentExams() {
       const score = data.result?.score ?? 0;
       const maxScore = data.result?.maxScore ?? 0;
       const percentage = data.result?.percentage ?? 0;
-      
+
       let message: string;
       let variant: 'default' | 'destructive' = 'default';
-      
+
       if (data.submitted && data.result) {
         if (data.alreadySubmitted) {
           message = `Your exam was already submitted. Score: ${score}/${maxScore} (${percentage}%). Viewing results...`;
@@ -1562,7 +1562,7 @@ export default function StudentExams() {
       } else {
         message = data.message || "Your exam has been submitted successfully. Viewing results...";
       }
-      
+
       // Redirect to exam results page with result data
       redirectToExamResults(data.result || { submitted: true, submissionReason: 'manual' }, message, variant);
     },
@@ -1640,7 +1640,7 @@ export default function StudentExams() {
     }
     if (!user?.id) {
       toast({
-        title: "Authentication Required", 
+        title: "Authentication Required",
         description: "Please log in again to start the exam.",
         variant: "destructive",
       });
@@ -1664,7 +1664,7 @@ export default function StudentExams() {
       return;
     }
     // Check if student already submitted this exam (via sessionStorage flag)
-    const existingSubmissions = Object.keys(sessionStorage).filter(key => 
+    const existingSubmissions = Object.keys(sessionStorage).filter(key =>
       key.startsWith('exam_submitted_') && sessionStorage.getItem(key) === 'true'
     );
     if (existingSubmissions.length > 0) {
@@ -1716,7 +1716,7 @@ export default function StudentExams() {
       if (validation.isValid) {
         // Check if this is actually a new/changed answer
         const existingAnswer = existingAnswers.find(a => a.questionId === questionId);
-        const isNewAnswer = !existingAnswer || 
+        const isNewAnswer = !existingAnswer ||
           (questionType === 'multiple_choice' ? existingAnswer.selectedOptionId !== answer : existingAnswer.textAnswer !== answer);
 
         if (isNewAnswer) {
@@ -1757,7 +1757,7 @@ export default function StudentExams() {
     // Prevent multiple redirects
     if (isRedirecting) return;
     setIsRedirecting(true);
-    
+
     // STEP 1: Clear all timers and pending operations first
     Object.values(saveTimeoutsRef.current).forEach(timeout => clearTimeout(timeout));
     Object.values(debounceTimersRef.current).forEach(timeout => clearTimeout(timeout));
@@ -1765,7 +1765,7 @@ export default function StudentExams() {
     saveTimeoutsRef.current = {};
     debounceTimersRef.current = {};
     tabSwitchTimeoutRef.current = null;
-    
+
     // STEP 2: Store exam result in sessionStorage for the results page to consume
     if (resultData) {
       // Find the exam title and subject from the exams list
@@ -1783,12 +1783,12 @@ export default function StudentExams() {
       };
       sessionStorage.setItem('lastExamResult', JSON.stringify(storedResult));
     }
-    
+
     // STEP 3: Invalidate cache (use user ID for proper cache isolation)
     queryClient.invalidateQueries({ queryKey: ['/api/exams'] });
     queryClient.invalidateQueries({ queryKey: ['/api/exam-sessions'] });
     queryClient.invalidateQueries({ queryKey: ['/api/exam-results', user?.id] });
-    
+
     // STEP 4: Reset exam state completely (prevent inline UI from showing)
     setShowResults(false);
     setExamResults(null);
@@ -1804,7 +1804,7 @@ export default function StudentExams() {
     setShowTabSwitchWarning(false);
     setIsSubmitting(false);
     setIsScoring(false);
-    
+
     // STEP 5: Show message
     if (message) {
       toast({
@@ -1813,7 +1813,7 @@ export default function StudentExams() {
         variant,
       });
     }
-    
+
     // STEP 6: Navigate to results page with exam ID for strict matching
     const examId = resultData?.examId || activeSessionRef.current?.examId;
     const url = examId ? `/portal/student/exam-results?examId=${examId}` : '/portal/student/exam-results';
@@ -1835,12 +1835,12 @@ export default function StudentExams() {
     setQuestionSaveStatus({});
     setPendingSaves(new Set());
     setShowTabSwitchWarning(false);
-    
+
     // Refresh exam list to show updated submission status (use user ID for proper cache isolation)
     queryClient.invalidateQueries({ queryKey: ['/api/exams'] });
     queryClient.invalidateQueries({ queryKey: ['/api/exam-sessions'] });
     queryClient.invalidateQueries({ queryKey: ['/api/exam-results', user?.id] });
-    
+
     // Show confirmation message
     toast({
       title: "Results Saved",
@@ -1854,7 +1854,7 @@ export default function StudentExams() {
   const forceSubmitExam = async (retryCount = 0): Promise<void> => {
     const MAX_RETRIES = 3;
     const RETRY_DELAY = 2000; // 2 seconds between retries
-    
+
     if (isSubmitting || isScoring || isRedirecting) {
       return;
     }
@@ -1864,39 +1864,39 @@ export default function StudentExams() {
     try {
       // Use shared submission helper with force flag for consistent behavior
       const data = await executeSubmission(true);
-      
+
       // Verify submission was successful by checking the response
       if (!data || (!data.submitted && !data.result)) {
         throw new Error('Submission response invalid - server did not confirm submission');
       }
-      
+
       setIsScoring(false);
       setIsSubmitting(false);
       isAutoSubmittingRef.current = false; // Reset the auto-submit flag
-      
+
       // Enhanced cache invalidation
       queryClient.invalidateQueries({ queryKey: ['/api/student-answers/session', activeSessionRef.current?.id] });
       queryClient.invalidateQueries({ queryKey: ['/api/exam-results', user?.id] });
       queryClient.invalidateQueries({ queryKey: ['/api/exam-sessions'] });
-      
+
       // Determine the appropriate message based on the submission context
       const violations = violationCountRef.current;
       const timeExpired = timeRemainingRef.current !== null && timeRemainingRef.current <= 0;
       const score = data.result?.score ?? 0;
       const maxScore = data.result?.maxScore ?? 0;
       const percentage = data.result?.percentage ?? 0;
-      
+
       // Build redirect message based on submission reason
       let message: string;
       let variant: 'default' | 'destructive' = 'default';
-      
+
       // Prepare result data with submission reason
       const resultData = {
         ...data.result,
         submissionReason: violations >= MAX_VIOLATIONS_BEFORE_AUTO_SUBMIT ? 'violation' : (timeExpired ? 'timeout' : 'manual'),
         violationCount: violations,
       };
-      
+
       if (violations >= MAX_VIOLATIONS_BEFORE_AUTO_SUBMIT) {
         message = `Your exam was automatically submitted due to ${violations} security violation(s). Score: ${score}/${maxScore} (${percentage}%). Redirecting to results...`;
         variant = 'destructive';
@@ -1908,32 +1908,32 @@ export default function StudentExams() {
       } else {
         message = `Exam submitted successfully. Score: ${score}/${maxScore} (${percentage}%). Redirecting to results...`;
       }
-      
+
       // Redirect to exam results page with result data
       redirectToExamResults(resultData, message, variant);
-      
+
     } catch (error: any) {
       // RETRY LOGIC: Critical for security - must ensure exam is submitted
       if (retryCount < MAX_RETRIES) {
         console.warn(`Auto-submit attempt ${retryCount + 1} failed, retrying in ${RETRY_DELAY}ms...`);
         setIsScoring(false);
         setIsSubmitting(false);
-        
+
         toast({
           title: "Submission in Progress",
           description: `Attempting to submit your exam (attempt ${retryCount + 2}/${MAX_RETRIES + 1})...`,
           variant: "default",
         });
-        
+
         // Wait and retry
         await new Promise(resolve => setTimeout(resolve, RETRY_DELAY));
         return forceSubmitExam(retryCount + 1);
       }
-      
+
       // All retries exhausted - notify user and try one final time with a direct API call
       setIsScoring(false);
       setIsSubmitting(false);
-      
+
       // Final fallback: Try to submit via direct API call without the mutation
       try {
         if (activeSessionRef.current?.id) {
@@ -1946,7 +1946,7 @@ export default function StudentExams() {
             submittedAt: new Date().toISOString(),
             violationCount: violationCountRef.current
           });
-          
+
           if (response.ok) {
             toast({
               title: "Exam Submitted",
@@ -1960,13 +1960,13 @@ export default function StudentExams() {
       } catch (fallbackError) {
         console.error('Fallback submission also failed:', fallbackError);
       }
-      
+
       toast({
         title: "Submission Error - Please Contact Instructor",
         description: `Failed to submit exam after ${MAX_RETRIES + 1} attempts. Your answers have been saved locally. Please contact your instructor immediately.`,
         variant: "destructive",
       });
-      
+
       // Save answers to localStorage as emergency backup
       try {
         localStorage.setItem(`exam_backup_${activeSessionRef.current?.id}`, JSON.stringify({
@@ -1992,7 +1992,7 @@ export default function StudentExams() {
       return;
     }
     setIsSubmitting(true);
-    
+
     try {
       await submitExamMutation.mutateAsync();
     } catch (error) {
@@ -2112,7 +2112,7 @@ export default function StudentExams() {
                   <AlertCircle className="w-5 h-5 flex-shrink-0" />
                   <div>
                     <p className="text-sm font-semibold">
-                      {violationCount < MAX_VIOLATIONS_BEFORE_AUTO_SUBMIT 
+                      {violationCount < MAX_VIOLATIONS_BEFORE_AUTO_SUBMIT
                         ? `Security Warning ${violationCount}/${MAX_WARNINGS_ALLOWED} - ${MAX_VIOLATIONS_BEFORE_AUTO_SUBMIT - violationCount} violation(s) until auto-submit`
                         : `EXAM AUTO-SUBMITTED: ${violationCount} violations detected`
                       }
@@ -2163,11 +2163,10 @@ export default function StudentExams() {
                     {questionOptions.map((option: any, index: number) => (
                       <div
                         key={option.id}
-                        className={`border rounded-lg p-4 sm:p-5 cursor-pointer transition-colors ${
-                          answers[currentQuestion.id] === String(option.id)
+                        className={`border rounded-lg p-4 sm:p-5 cursor-pointer transition-colors ${answers[currentQuestion.id] === String(option.id)
                             ? 'border-blue-500 bg-blue-50 dark:bg-blue-950/30'
                             : 'border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600'
-                        }`}
+                          }`}
                       >
                         <div className="flex items-start space-x-3">
                           <RadioGroupItem
@@ -2224,7 +2223,7 @@ export default function StudentExams() {
                   const currentAnswer = answers[currentQuestion.id];
                   if (currentAnswer && validateAnswer(currentQuestion.questionType, currentAnswer).isValid) {
                     const existingAnswer = existingAnswers.find(a => a.questionId === currentQuestion.id);
-                    const isNewAnswer = !existingAnswer || 
+                    const isNewAnswer = !existingAnswer ||
                       (currentQuestion.questionType === 'multiple_choice' ? existingAnswer.selectedOptionId !== currentAnswer : existingAnswer.textAnswer !== currentAnswer);
                     if (isNewAnswer) {
                       submitAnswerMutation.mutate({ questionId: currentQuestion.id, answer: currentAnswer, questionType: currentQuestion.questionType });
@@ -2269,7 +2268,7 @@ export default function StudentExams() {
                     const currentAnswer = answers[currentQuestion.id];
                     if (currentAnswer && validateAnswer(currentQuestion.questionType, currentAnswer).isValid) {
                       const existingAnswer = existingAnswers.find(a => a.questionId === currentQuestion.id);
-                      const isNewAnswer = !existingAnswer || 
+                      const isNewAnswer = !existingAnswer ||
                         (currentQuestion.questionType === 'multiple_choice' ? existingAnswer.selectedOptionId !== currentAnswer : existingAnswer.textAnswer !== currentAnswer);
                       if (isNewAnswer) {
                         submitAnswerMutation.mutate({ questionId: currentQuestion.id, answer: currentAnswer, questionType: currentQuestion.questionType });
@@ -2293,7 +2292,7 @@ export default function StudentExams() {
                 {examQuestions.map((q, idx) => {
                   const isAnswered = answers[q.id];
                   const isCurrent = idx === currentQuestionIndex;
-                  
+
                   return (
                     <button
                       key={q.id}
@@ -2301,7 +2300,7 @@ export default function StudentExams() {
                         const currentAnswer = answers[currentQuestion.id];
                         if (currentAnswer && validateAnswer(currentQuestion.questionType, currentAnswer).isValid) {
                           const existingAnswer = existingAnswers.find(a => a.questionId === currentQuestion.id);
-                          const isNewAnswer = !existingAnswer || 
+                          const isNewAnswer = !existingAnswer ||
                             (currentQuestion.questionType === 'multiple_choice' ? existingAnswer.selectedOptionId !== currentAnswer : existingAnswer.textAnswer !== currentAnswer);
                           if (isNewAnswer) {
                             submitAnswerMutation.mutate({ questionId: currentQuestion.id, answer: currentAnswer, questionType: currentQuestion.questionType });
@@ -2309,13 +2308,12 @@ export default function StudentExams() {
                         }
                         setCurrentQuestionIndex(idx);
                       }}
-                      className={`h-8 w-8 rounded text-xs font-medium transition-colors ${
-                        isCurrent 
-                          ? 'bg-blue-600 text-white' 
-                          : isAnswered 
-                            ? 'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300 border border-green-300 dark:border-green-700' 
+                      className={`h-8 w-8 rounded text-xs font-medium transition-colors ${isCurrent
+                          ? 'bg-blue-600 text-white'
+                          : isAnswered
+                            ? 'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300 border border-green-300 dark:border-green-700'
                             : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400 border border-gray-300 dark:border-gray-600'
-                      }`}
+                        }`}
                       data-testid={`nav-question-${idx + 1}`}
                     >
                       {idx + 1}
@@ -2394,14 +2392,14 @@ export default function StudentExams() {
 
     if (examResults.breakdown) {
       const breakdown = examResults.breakdown;
-      normalizedResults.correctAnswers = 'correct' in breakdown ? breakdown.correct : 
-                                         ('correctAnswers' in breakdown ? breakdown.correctAnswers : 0);
-      normalizedResults.wrongAnswers = 'incorrect' in breakdown ? breakdown.incorrect : 
-                                        ('incorrectAnswers' in breakdown ? breakdown.incorrectAnswers : 0);
-      normalizedResults.totalAnswered = 'totalQuestions' in breakdown ? breakdown.totalQuestions : 
-                                         ('answered' in breakdown ? breakdown.answered : 0);
-      normalizedResults.autoScoredQuestions = 'autoScored' in breakdown ? breakdown.autoScored : 
-                                               ('autoScoredQuestions' in breakdown ? breakdown.autoScoredQuestions : 0);
+      normalizedResults.correctAnswers = 'correct' in breakdown ? breakdown.correct :
+        ('correctAnswers' in breakdown ? breakdown.correctAnswers : 0);
+      normalizedResults.wrongAnswers = 'incorrect' in breakdown ? breakdown.incorrect :
+        ('incorrectAnswers' in breakdown ? breakdown.incorrectAnswers : 0);
+      normalizedResults.totalAnswered = 'totalQuestions' in breakdown ? breakdown.totalQuestions :
+        ('answered' in breakdown ? breakdown.answered : 0);
+      normalizedResults.autoScoredQuestions = 'autoScored' in breakdown ? breakdown.autoScored :
+        ('autoScoredQuestions' in breakdown ? breakdown.autoScoredQuestions : 0);
       normalizedResults.hasDetailedResults = true;
       if (examResults.questionDetails && examResults.questionDetails.length > 0) {
         normalizedResults.questionDetails = examResults.questionDetails;
@@ -2425,69 +2423,69 @@ export default function StudentExams() {
 
     return (
       <div className="p-6 max-w-4xl mx-auto">
-          <div className="text-center mb-8">
-            <div className="flex justify-center mb-4">
-              <div className="w-16 h-16 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center">
-                <CheckCircle className="w-10 h-10 text-green-600 dark:text-green-400" />
+        <div className="text-center mb-8">
+          <div className="flex justify-center mb-4">
+            <div className="w-16 h-16 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center">
+              <CheckCircle className="w-10 h-10 text-green-600 dark:text-green-400" />
+            </div>
+          </div>
+          <h1 className="text-3xl font-bold text-slate-900 dark:text-white mb-2">Exam Results</h1>
+          <p className="text-slate-600 dark:text-slate-400">Review your performance details below.</p>
+        </div>
+
+        <Card className="mb-8">
+          <CardContent className="pt-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+              <div className="flex flex-col items-center">
+                <div className="relative w-48 h-48">
+                  <svg className="w-48 h-48 transform -rotate-90" viewBox="0 0 200 200">
+                    <circle cx="100" cy="100" r={radius} stroke="currentColor" strokeWidth="10" fill="transparent" className="text-slate-100 dark:text-slate-800" />
+                    <circle cx="100" cy="100" r={radius} stroke="currentColor" strokeWidth="10" fill="transparent" strokeDasharray={circumference} strokeDashoffset={strokeDashoffset} className="text-blue-600 transition-all duration-1000" strokeLinecap="round" />
+                  </svg>
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <span className="text-4xl font-bold">{normalizedResults.percentage}%</span>
+                  </div>
+                </div>
+                <div className="mt-4 text-center">
+                  <p className="text-lg font-semibold">{normalizedResults.score} / {normalizedResults.maxScore}</p>
+                  <p className="text-sm text-slate-500">Total Score</p>
+                </div>
+              </div>
+              <div className="space-y-4">
+                <div className="flex items-center justify-between p-3 bg-slate-50 dark:bg-slate-900 rounded-lg">
+                  <div className="flex items-center gap-2">
+                    <CheckCircle className="w-5 h-5 text-green-500" />
+                    <span>Correct Answers</span>
+                  </div>
+                  <span className="font-bold">{normalizedResults.correctAnswers}</span>
+                </div>
+                <div className="flex items-center justify-between p-3 bg-slate-50 dark:bg-slate-900 rounded-lg">
+                  <div className="flex items-center gap-2">
+                    <XCircle className="w-5 h-5 text-red-500" />
+                    <span>Incorrect Answers</span>
+                  </div>
+                  <span className="font-bold">{normalizedResults.wrongAnswers}</span>
+                </div>
+                {normalizedResults.timeTakenFormatted && (
+                  <div className="flex items-center justify-between p-3 bg-slate-50 dark:bg-slate-900 rounded-lg">
+                    <div className="flex items-center gap-2">
+                      <Clock className="w-5 h-5 text-blue-500" />
+                      <span>Time Taken</span>
+                    </div>
+                    <span className="font-bold">{normalizedResults.timeTakenFormatted}</span>
+                  </div>
+                )}
               </div>
             </div>
-            <h1 className="text-3xl font-bold text-slate-900 dark:text-white mb-2">Exam Results</h1>
-            <p className="text-slate-600 dark:text-slate-400">Review your performance details below.</p>
-          </div>
+          </CardContent>
+        </Card>
 
-          <Card className="mb-8">
-            <CardContent className="pt-6">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
-                <div className="flex flex-col items-center">
-                  <div className="relative w-48 h-48">
-                    <svg className="w-48 h-48 transform -rotate-90" viewBox="0 0 200 200">
-                      <circle cx="100" cy="100" r={radius} stroke="currentColor" strokeWidth="10" fill="transparent" className="text-slate-100 dark:text-slate-800" />
-                      <circle cx="100" cy="100" r={radius} stroke="currentColor" strokeWidth="10" fill="transparent" strokeDasharray={circumference} strokeDashoffset={strokeDashoffset} className="text-blue-600 transition-all duration-1000" strokeLinecap="round" />
-                    </svg>
-                    <div className="absolute inset-0 flex items-center justify-center">
-                      <span className="text-4xl font-bold">{normalizedResults.percentage}%</span>
-                    </div>
-                  </div>
-                  <div className="mt-4 text-center">
-                    <p className="text-lg font-semibold">{normalizedResults.score} / {normalizedResults.maxScore}</p>
-                    <p className="text-sm text-slate-500">Total Score</p>
-                  </div>
-                </div>
-                <div className="space-y-4">
-                  <div className="flex items-center justify-between p-3 bg-slate-50 dark:bg-slate-900 rounded-lg">
-                    <div className="flex items-center gap-2">
-                      <CheckCircle className="w-5 h-5 text-green-500" />
-                      <span>Correct Answers</span>
-                    </div>
-                    <span className="font-bold">{normalizedResults.correctAnswers}</span>
-                  </div>
-                  <div className="flex items-center justify-between p-3 bg-slate-50 dark:bg-slate-900 rounded-lg">
-                    <div className="flex items-center gap-2">
-                      <XCircle className="w-5 h-5 text-red-500" />
-                      <span>Incorrect Answers</span>
-                    </div>
-                    <span className="font-bold">{normalizedResults.wrongAnswers}</span>
-                  </div>
-                  {normalizedResults.timeTakenFormatted && (
-                    <div className="flex items-center justify-between p-3 bg-slate-50 dark:bg-slate-900 rounded-lg">
-                      <div className="flex items-center gap-2">
-                        <Clock className="w-5 h-5 text-blue-500" />
-                        <span>Time Taken</span>
-                      </div>
-                      <span className="font-bold">{normalizedResults.timeTakenFormatted}</span>
-                    </div>
-                  )}
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-
-          <div className="flex justify-center">
-            <Button onClick={() => setShowResults(false)} className="bg-blue-600 hover:bg-blue-700 text-white">
-              Back to Exams
-            </Button>
-          </div>
+        <div className="flex justify-center">
+          <Button onClick={() => setShowResults(false)} className="bg-blue-600 hover:bg-blue-700 text-white">
+            Back to Exams
+          </Button>
         </div>
+      </div>
     );
   }
 
@@ -2540,10 +2538,10 @@ export default function StudentExams() {
             {exams.map((exam) => {
               const status = getExamStatus(exam.id);
               const subject = subjects.find(s => s.id === exam.subjectId);
-              
+
               return (
-                <Card 
-                  key={exam.id} 
+                <Card
+                  key={exam.id}
                   className="group overflow-hidden border border-slate-200 dark:border-slate-800 shadow-none hover:border-green-400/50 transition-all duration-300 bg-white dark:bg-card relative rounded-xl"
                   data-testid={`card-exam-${exam.id}`}
                 >
@@ -2603,7 +2601,7 @@ export default function StudentExams() {
                       </div>
 
                       {/* Action Button */}
-                      <Button 
+                      <Button
                         onClick={() => status.isCompleted ? setLocation(`/portal/student/exam-results?examId=${exam.id}`) : handleStartExam(exam)}
                         className="w-full h-9 bg-[#3b82f6] hover:bg-blue-700 text-white rounded-md font-medium shadow-none transition-all group/btn text-sm"
                         data-testid={`button-action-${exam.id}`}

@@ -1,8 +1,8 @@
 ﻿import { DEFAULT_BRANDING } from '@/config/branding';
 import { useLocation } from 'wouter';
-import { 
-  GraduationCap, Home, Users, Calendar, BookOpen, MessageSquare, User, Settings, 
-  Bell, LogOut, ImageIcon, FileText, Menu, ChevronLeft, ChevronRight, ClipboardCheck, 
+import {
+  GraduationCap, Home, Users, Calendar, BookOpen, MessageSquare, User, Settings,
+  Bell, LogOut, ImageIcon, FileText, Menu, ChevronLeft, ChevronRight, ClipboardCheck,
   ClipboardList, ChevronDown, History, UserCheck, Eye, Briefcase, Shield, Activity,
   Clock, PenTool, CheckSquare, Award, Star, Library, DollarSign, Trophy, HelpCircle,
   Inbox, Megaphone, MessagesSquare, ClipboardPen, BarChart3, FolderOpen, RotateCcw
@@ -21,7 +21,7 @@ import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { useState, useEffect, useTransition } from 'react';
-import schoolLogo from '@assets/1000025432-removebg-preview (1)_1757796555126.png';
+const schoolLogo = '/images/hardcoded-school-logo.png';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
 import { NotificationBell } from '@/components/NotificationBell';
 import { ThemeToggle } from '@/components/ThemeToggle';
@@ -136,7 +136,7 @@ export default function PortalLayout({ children, userRole, userName, userInitial
           ...baseNav,
           { name: 'My Classes', href: `/portal/${userRole}/classes`, icon: Users },
           { name: 'Attendance', href: `/portal/${userRole}/coming-soon`, icon: Calendar },
-          { 
+          {
             type: 'group',
             label: 'Exam Management',
             icon: ClipboardList,
@@ -322,7 +322,7 @@ export default function PortalLayout({ children, userRole, userName, userInitial
       links.forEach(link => {
         (link as HTMLLinkElement).href = faviconUrl;
       });
-      
+
       if (links.length === 0) {
         const link = document.createElement('link');
         link.rel = 'icon';
@@ -346,9 +346,9 @@ export default function PortalLayout({ children, userRole, userName, userInitial
       <div className="flex flex-col h-full">
         <div className="flex-shrink-0 h-[100px] flex items-center border-b border-gray-200 dark:border-gray-700 px-4 bg-gradient-to-br from-blue-50 to-white dark:from-gray-800 dark:to-gray-900">
           <div className={`flex items-center w-full transition-all duration-300 ease-in-out ${collapsed ? 'justify-center' : 'space-x-3'}`}>
-            <img 
-              src={displayLogo} 
-              alt={`${schoolName} Logo`} 
+            <img
+              src={displayLogo}
+              alt={`${schoolName} Logo`}
               className={`${collapsed ? 'h-10 w-10' : 'h-16 w-16'} object-contain transition-all duration-300 ease-in-out drop-shadow-md`}
             />
             {!collapsed && (
@@ -366,17 +366,16 @@ export default function PortalLayout({ children, userRole, userName, userInitial
             const Icon = item.icon;
             if ('type' in item && item.type === 'group') {
               return (
-                <Collapsible 
-                  key={item.label} 
-                  open={item.isOpen} 
+                <Collapsible
+                  key={item.label}
+                  open={item.isOpen}
                   onOpenChange={(open) => item.setIsOpen(open)}
                 >
                   <CollapsibleTrigger asChild>
                     <Button
                       variant="ghost"
-                      className={`w-full text-sm font-semibold rounded-xl ${
-                        collapsed ? 'justify-center px-2' : 'justify-start px-3'
-                      } text-gray-700 dark:text-gray-300 hover:bg-gradient-to-r hover:from-blue-50 hover:to-blue-100 dark:hover:from-blue-900/20 dark:hover:to-blue-800/20 hover:text-blue-700 dark:hover:text-blue-300 transition-all duration-300 ease-in-out`}
+                      className={`w-full text-sm font-semibold rounded-xl ${collapsed ? 'justify-center px-2' : 'justify-start px-3'
+                        } text-gray-700 dark:text-gray-300 hover:bg-gradient-to-r hover:from-blue-50 hover:to-blue-100 dark:hover:from-blue-900/20 dark:hover:to-blue-800/20 hover:text-blue-700 dark:hover:text-blue-300 transition-all duration-300 ease-in-out`}
                       title={collapsed ? item.label : undefined}
                     >
                       <Icon className={`h-4 w-4 transition-all duration-300 ease-in-out ${collapsed ? '' : 'mr-3'}`} />
@@ -402,11 +401,10 @@ export default function PortalLayout({ children, userRole, userName, userInitial
                             key={subItem.href}
                             type="button"
                             onClick={() => handleNavigation(subItem.href, subItem.label)}
-                            className={`flex items-center px-3 py-2 rounded-lg text-sm font-medium transition-all duration-200 w-full text-left ${
-                              subItemActive 
-                                ? 'bg-gradient-to-r from-blue-600 to-blue-700 text-white shadow-lg shadow-blue-500/50 dark:shadow-blue-500/30' 
+                            className={`flex items-center px-3 py-2 rounded-lg text-sm font-medium transition-all duration-200 w-full text-left ${subItemActive
+                                ? 'bg-gradient-to-r from-blue-600 to-blue-700 text-white shadow-lg shadow-blue-500/50 dark:shadow-blue-500/30'
                                 : 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-gray-900 dark:hover:text-gray-100'
-                            }`}
+                              }`}
                             data-testid={`nav-${subItem.label.toLowerCase().replace(/\s+/g, '-')}`}
                             title={subItem.label}
                           >
@@ -430,11 +428,10 @@ export default function PortalLayout({ children, userRole, userName, userInitial
                 key={navItem.name}
                 type="button"
                 onClick={() => handleNavigation(navItem.href, navItem.name)}
-                className={`flex items-center ${collapsed ? 'justify-center px-2' : 'space-x-3 px-3'} py-2.5 rounded-xl text-sm font-semibold transition-all duration-300 ease-in-out w-full ${
-                  navItemActive 
-                    ? 'bg-gradient-to-r from-blue-600 to-blue-700 text-white shadow-lg shadow-blue-500/50 dark:shadow-blue-500/30 scale-105' 
+                className={`flex items-center ${collapsed ? 'justify-center px-2' : 'space-x-3 px-3'} py-2.5 rounded-xl text-sm font-semibold transition-all duration-300 ease-in-out w-full ${navItemActive
+                    ? 'bg-gradient-to-r from-blue-600 to-blue-700 text-white shadow-lg shadow-blue-500/50 dark:shadow-blue-500/30 scale-105'
                     : 'text-gray-700 dark:text-gray-300 hover:bg-gradient-to-r hover:from-blue-50 hover:to-blue-100 dark:hover:from-blue-900/20 dark:hover:to-blue-800/20 hover:text-blue-700 dark:hover:text-blue-300 hover:scale-102'
-                }`}
+                  }`}
                 data-testid={`nav-${navItem.name.toLowerCase().replace(/\s+/g, '-')}`}
                 title={collapsed ? navItem.name : undefined}
               >
@@ -444,7 +441,7 @@ export default function PortalLayout({ children, userRole, userName, userInitial
             );
           })}
         </nav>
-        
+
         {/* Logout button at the bottom */}
         <div className={`mt-auto p-3 border-t border-gray-200 dark:border-gray-700 ${collapsed ? 'px-2' : ''}`}>
           <button
@@ -504,9 +501,9 @@ export default function PortalLayout({ children, userRole, userName, userInitial
                 {isMobile && (
                   <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
                     <SheetTrigger asChild>
-                      <Button 
-                        variant="outline" 
-                        size="icon" 
+                      <Button
+                        variant="outline"
+                        size="icon"
                         className="md:hidden h-9 w-9 flex-shrink-0 rounded-lg shadow-sm hover:shadow-md transition-all duration-200 border-gray-200 dark:border-gray-700"
                         data-testid="button-mobile-menu"
                       >

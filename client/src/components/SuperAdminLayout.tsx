@@ -32,7 +32,7 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { useAuth } from "@/lib/auth";
-import schoolLogo from '@assets/1000025432-removebg-preview (1)_1757796555126.png';
+const schoolLogo = '/images/hardcoded-school-logo.png';
 import { NotificationBell } from '@/components/NotificationBell';
 import { ThemeToggle } from '@/components/ThemeToggle';
 import { HeaderSearch } from '@/components/HeaderSearch';
@@ -82,9 +82,9 @@ export default function SuperAdminLayout({ children }: SuperAdminLayoutProps) {
   const [expandedSections, setExpandedSections] = useState<string[]>([]);
 
   const toggleSection = (section: string) => {
-    setExpandedSections(prev => 
-      prev.includes(section) 
-        ? prev.filter(s => s !== section) 
+    setExpandedSections(prev =>
+      prev.includes(section)
+        ? prev.filter(s => s !== section)
         : [...prev, section]
     );
   };
@@ -204,7 +204,7 @@ export default function SuperAdminLayout({ children }: SuperAdminLayoutProps) {
     const isChildActive = (children?: { label: string; path: string }[]) => {
       return children?.some(child => isActive(child.path)) ?? false;
     };
-    
+
     // Handle navigation with immediate sidebar close
     const handleNavigation = (path: string) => {
       onNavigate?.();
@@ -215,9 +215,9 @@ export default function SuperAdminLayout({ children }: SuperAdminLayoutProps) {
       <div className="flex flex-col h-full">
         <div className="flex-shrink-0 h-[100px] flex items-center border-b border-gray-200 dark:border-gray-700 px-4 bg-gradient-to-br from-blue-50 to-white dark:from-gray-800 dark:to-gray-900">
           <div className={`flex items-center w-full transition-all duration-300 ease-in-out ${collapsed ? 'justify-center' : 'space-x-3'}`}>
-            <img 
-              src={schoolLogoUrl} 
-              alt={`${schoolName} Logo`} 
+            <img
+              src={schoolLogoUrl}
+              alt={`${schoolName} Logo`}
               className={`${collapsed ? 'h-10 w-10' : 'h-16 w-16'} object-contain transition-all duration-300 ease-in-out drop-shadow-md`}
             />
             {!collapsed && (
@@ -257,13 +257,11 @@ export default function SuperAdminLayout({ children }: SuperAdminLayoutProps) {
                         }
                       }
                     }}
-                    className={`w-full text-sm font-semibold rounded-xl ${
-                      collapsed ? 'justify-center px-2' : 'justify-start px-3'
-                    } ${
-                      childActive 
-                        ? 'bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-300' 
+                    className={`w-full text-sm font-semibold rounded-xl ${collapsed ? 'justify-center px-2' : 'justify-start px-3'
+                      } ${childActive
+                        ? 'bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-300'
                         : 'text-gray-700 dark:text-gray-300 hover:bg-gradient-to-r hover:from-blue-50 hover:to-blue-100 dark:hover:from-blue-900/20 dark:hover:to-blue-800/20 hover:text-blue-700 dark:hover:text-blue-300'
-                    } transition-all duration-300 ease-in-out`}
+                      } transition-all duration-300 ease-in-out`}
                     title={collapsed ? item.label : undefined}
                   >
                     <Icon className={`h-4 w-4 transition-all duration-300 ease-in-out ${collapsed ? '' : 'mr-3'}`} />
@@ -281,11 +279,10 @@ export default function SuperAdminLayout({ children }: SuperAdminLayoutProps) {
                           key={child.path}
                           type="button"
                           onClick={() => handleNavigation(child.path)}
-                          className={`flex items-center px-3 py-2 rounded-lg text-sm font-medium transition-all duration-200 w-full text-left ${
-                            isActive(child.path)
-                              ? 'bg-gradient-to-r from-blue-600 to-blue-700 text-white shadow-lg shadow-blue-500/50 dark:shadow-blue-500/30' 
+                          className={`flex items-center px-3 py-2 rounded-lg text-sm font-medium transition-all duration-200 w-full text-left ${isActive(child.path)
+                              ? 'bg-gradient-to-r from-blue-600 to-blue-700 text-white shadow-lg shadow-blue-500/50 dark:shadow-blue-500/30'
                               : 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-gray-900 dark:hover:text-gray-100'
-                          }`}
+                            }`}
                         >
                           {child.label}
                         </button>
@@ -301,11 +298,10 @@ export default function SuperAdminLayout({ children }: SuperAdminLayoutProps) {
                 key={item.path}
                 type="button"
                 onClick={() => item.path && handleNavigation(item.path)}
-                className={`flex items-center ${collapsed ? 'justify-center px-2' : 'space-x-3 px-3'} py-2.5 rounded-xl text-sm font-semibold transition-all duration-300 ease-in-out w-full ${
-                  navItemActive 
-                    ? 'bg-gradient-to-r from-blue-600 to-blue-700 text-white shadow-lg shadow-blue-500/50 dark:shadow-blue-500/30 scale-105' 
+                className={`flex items-center ${collapsed ? 'justify-center px-2' : 'space-x-3 px-3'} py-2.5 rounded-xl text-sm font-semibold transition-all duration-300 ease-in-out w-full ${navItemActive
+                    ? 'bg-gradient-to-r from-blue-600 to-blue-700 text-white shadow-lg shadow-blue-500/50 dark:shadow-blue-500/30 scale-105'
                     : 'text-gray-700 dark:text-gray-300 hover:bg-gradient-to-r hover:from-blue-50 hover:to-blue-100 dark:hover:from-blue-900/20 dark:hover:to-blue-800/20 hover:text-blue-700 dark:hover:text-blue-300 hover:scale-102'
-                }`}
+                  }`}
                 title={collapsed ? item.label : undefined}
               >
                 <Icon className="h-4 w-4 transition-all duration-300 ease-in-out" />
@@ -363,9 +359,9 @@ export default function SuperAdminLayout({ children }: SuperAdminLayoutProps) {
               {isMobile && (
                 <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
                   <SheetTrigger asChild>
-                    <Button 
-                      variant="outline" 
-                      size="icon" 
+                    <Button
+                      variant="outline"
+                      size="icon"
                       className="md:hidden h-9 w-9 flex-shrink-0 rounded-lg shadow-sm hover:shadow-md transition-all duration-200 border-gray-200 dark:border-gray-700"
                       data-testid="button-mobile-menu"
                     >

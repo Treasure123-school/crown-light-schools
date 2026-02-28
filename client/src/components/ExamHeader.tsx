@@ -2,7 +2,7 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Timer } from "lucide-react";
 import { cn } from "@/lib/utils";
-import schoolLogo from "@assets/file_00000000d62c71fdb9145647ea13c6bc(1)_1771427539120.png";
+const schoolLogo = '/images/hardcoded-school-logo.png';
 import { useQuery } from "@tanstack/react-query";
 
 interface ExamHeaderProps {
@@ -53,13 +53,13 @@ export function ExamHeader({
           {/* Left Side: Logo and Info */}
           <div className="flex items-center gap-4 sm:gap-6 min-w-0">
             <div className="shrink-0">
-              <img 
-                src={displayLogo} 
-                alt="School Logo" 
+              <img
+                src={displayLogo}
+                alt="School Logo"
                 className="h-16 w-16 sm:h-20 sm:w-20 md:h-24 md:w-24 object-contain"
               />
             </div>
-            
+
             <div className="flex flex-col min-w-0">
               <h1 className="text-lg sm:text-xl md:text-2xl font-bold text-[#0000FF] dark:text-blue-400 tracking-tight leading-none truncate mb-2">
                 {schoolName}
@@ -82,8 +82,8 @@ export function ExamHeader({
             {timeRemaining !== null && (
               <div className={cn(
                 "flex items-center gap-2 px-3 py-1.5 rounded-lg transition-all duration-500 border bg-slate-50/50 dark:bg-slate-800/30",
-                isLowTime 
-                  ? "text-red-600 border-red-200 dark:text-red-400 animate-pulse shadow-sm shadow-red-200/50" 
+                isLowTime
+                  ? "text-red-600 border-red-200 dark:text-red-400 animate-pulse shadow-sm shadow-red-200/50"
                   : "text-slate-900 border-slate-200 dark:text-slate-100 dark:border-slate-700 shadow-sm"
               )}>
                 <Timer className={cn("w-4 h-4 sm:w-5 sm:h-5", isLowTime ? "text-red-500" : "text-slate-500 dark:text-slate-400")} />
@@ -106,7 +106,7 @@ export function ExamHeader({
       </div>
       {/* Animated Progress Line */}
       <div className="absolute bottom-0 left-0 w-full h-0.5 bg-slate-100 dark:bg-slate-800 overflow-hidden">
-        <div 
+        <div
           className="h-full bg-[#0000FF] dark:bg-blue-500 transition-all duration-500 ease-out shadow-[0_0_8px_rgba(0,0,255,0.4)]"
           style={{ width: `${(currentQuestion / totalQuestions) * 100}%` }}
         />
